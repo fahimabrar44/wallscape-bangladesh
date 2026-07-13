@@ -1,0 +1,72 @@
+'use client';
+
+import { useState } from 'react';
+import { Ruler, RotateCcw } from 'lucide-react';
+
+export default function WallAreaCalculator() {
+  const [walls, setWalls] = useState([{ height: 0, width: 0 }]);
+  const [result, setResult] = useState<{ totalArea: number; doors: number; windows: number } | null>(null);
+
+  const addWall = () => setWalls([...walls, { height: 0, width: 0 }]);
+  const removeWall = (i: number) => setWalls(walls.filter((_, idx) => idx !== i));
+  const updateWall = (i: number, field: 'height' | 'width', value: number) => {
+    const updated = [...walls];
+    updated[i][field] = value;
+    setWalls(updated);
+  };
+
+  const calculate = () => {
+    const totalArea = walls.reduce((sum, w) => sum + w.height * w.width, 0);
+    setResult({ totalArea, doors: 0, windows: 0 });
+  };
+
+  const reset = () => { setWalls([{ height: 0, width: 0 }]); setResult(null); };
+
+  return (
+    <div className="container-custom py-8 lg:py-12">
+      <div className="max-w-2xl mx-auto">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+            <Ruler size={24} className="text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl lg:text-3xl font-bold">Wall Area Calculator</h1>
+            <p className="text-muted text-sm">Calculate the total wall area for your project</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-border p-6 space-y-4">
+          {walls.map((wall, i) => (
+            <div key={i} className="flex gap-3 items-end">
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-muted mb-1">Height (ft)</label>
+                <input type="number" value={wall.height || ''} onChange={(e) => updateWall(i, 'height', parseFloat(e.target.value) || 0)} className="w-full px-3 py-2 border border-border rounded-lg text-sm" placeholder="0" />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-muted mb-1">Width (ft)</label>
+                <input type="number" value={wall.width || ''} onChange={(e) => updateWall(i, 'width', parseFloat(e.target.value) || 0)} className="w-full px-3 py-2 border border-border rounded-lg text-sm" placeholder="0" />
+              </div>
+              {walls.length > 1 && (
+                <button onClick={() => removeWall(i)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition text-sm">Remove</button>
+              )}
+            </div>
+          ))}
+          <button onClick={addWall} className="text-sm text-primary font-medium hover:underline">+ Add another wall</button>
+
+          <div className="flex gap-3 pt-2">
+            <button onClick={calculate} className="flex-1 bg-primary text-white px-4 py-2.5 rounded-lg font-medium hover:bg-primary/90 transition">Calculate</button>
+            <button onClick={reset} className="flex items-center gap-1 px-4 py-2.5 border border-border rounded-lg font-medium hover:bg-gray-50 transition"><RotateCcw size={16} /> Reset</button>
+          </div>
+        </div>
+
+        {result && (
+          <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 mt-6">
+            <h3 className="font-semibold mb-2">Result</h3>
+            <p className="text-3xl font-bold text-primary">{result.totalArea.toFixed(2)} sq ft</p>
+            <p className="text-sm text-muted mt-1">Total wall area</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
