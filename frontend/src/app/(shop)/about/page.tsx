@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Target, Eye, Shield } from 'lucide-react';
+import { Target, Eye, Shield, Paintbrush, Ruler, ShoppingCart, Truck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -41,7 +41,7 @@ export default function AboutPage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-gold/5 rounded-full translate-y-1/2 -translate-x-1/2" />
         <div className="relative max-w-2xl">
-          <h1 className="text-3xl lg:text-4xl font-bold mb-4">
+          <h1 className="text-gradient text-3xl lg:text-4xl font-bold mb-4">
             We Bring Walls to Life
           </h1>
           <p className="text-muted text-lg leading-relaxed">
@@ -72,7 +72,7 @@ export default function AboutPage() {
               its quality, durability, and aesthetic appeal.
             </p>
           </div>
-          <div className="bg-gradient-to-br from-primary/10 to-gold/10 rounded-2xl p-8 lg:p-10 border border-border">
+          <div className="card-modern p-8 lg:p-10">
             <div className="grid grid-cols-2 gap-6 text-center">
               <div>
                 <p className="text-3xl lg:text-4xl font-bold text-primary">5000+</p>
@@ -95,10 +95,39 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* How It Works */}
+      <section className="mb-16 card-modern p-8 lg:p-12">
+        <div className="text-center mb-10 sm:mb-14">
+          <span className="section-label">Simple Process</span>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-1.5 sm:mt-2 mb-2 sm:mb-3">How It Works</h2>
+          <p className="text-sm sm:text-base text-muted max-w-xl mx-auto">From inspiration to installation — we make it effortless</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative">
+          <div className="hidden lg:block absolute top-16 left-[12%] right-[12%] h-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0" />
+
+          {[
+            { icon: Paintbrush, step: '01', title: 'Choose Design', desc: 'Browse our vast collection and find your perfect style' },
+            { icon: Ruler, step: '02', title: 'Calculate & Plan', desc: 'Use our tools to measure and estimate exactly what you need' },
+            { icon: ShoppingCart, step: '03', title: 'Order Easy', desc: 'Quick guest checkout with secure payment options' },
+            { icon: Truck, step: '04', title: 'Delivered & Done', desc: 'Fast delivery with optional professional installation' },
+          ].map((item) => (
+            <div key={item.step} className="relative text-center group">
+              <div className="relative z-10 w-20 h-20 lg:w-24 lg:h-24 mx-auto mb-5 bg-white rounded-2xl shadow-lg border border-border/50 flex items-center justify-center group-hover:shadow-xl group-hover:border-primary/30 group-hover:-translate-y-1 transition-all duration-300">
+                <item.icon size={32} className="text-primary" />
+              </div>
+              <span className="text-5xl lg:text-6xl font-black text-primary/5 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 select-none">{item.step}</span>
+              <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+              <p className="text-sm text-muted leading-relaxed max-w-xs mx-auto">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Mission, Vision, Values */}
       <section className="mb-16">
         <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl border border-border p-6 lg:p-8 hover:shadow-md transition">
+          <div className="card-modern p-6 lg:p-8">
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
               <Target size={24} className="text-primary" />
             </div>
@@ -109,7 +138,7 @@ export default function AboutPage() {
               affordable prices, with exceptional customer service.
             </p>
           </div>
-          <div className="bg-white rounded-xl border border-border p-6 lg:p-8 hover:shadow-md transition">
+          <div className="card-modern p-6 lg:p-8">
             <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
               <Eye size={24} className="text-gold" />
             </div>
@@ -120,7 +149,7 @@ export default function AboutPage() {
               improvement industry.
             </p>
           </div>
-          <div className="bg-white rounded-xl border border-border p-6 lg:p-8 hover:shadow-md transition">
+          <div className="card-modern p-6 lg:p-8">
             <div className="w-12 h-12 bg-primary-light/10 rounded-lg flex items-center justify-center mb-4">
               <Shield size={24} className="text-primary-light" />
             </div>
@@ -145,7 +174,7 @@ export default function AboutPage() {
                 <div className="hidden md:block w-1/2" />
                 <div className="absolute left-4 md:left-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow md:-translate-x-2 z-10 mt-1" />
                 <div className="ml-10 md:ml-0 md:w-1/2 md:px-8">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full">{m.year}</span>
+                  <span className="badge-primary">{m.year}</span>
                   <h3 className="font-bold text-lg mt-2">{m.title}</h3>
                   <p className="text-muted text-sm mt-1">{m.desc}</p>
                 </div>
@@ -163,7 +192,7 @@ export default function AboutPage() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {teamMembers.map((member) => (
-            <div key={member.name} className="bg-white rounded-xl border border-border p-6 text-center hover:shadow-md transition">
+            <div key={member.name} className="card-premium p-6 text-center">
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-primary-light/20 flex items-center justify-center">
                 <span className="text-xl font-bold text-primary">{member.initials}</span>
               </div>

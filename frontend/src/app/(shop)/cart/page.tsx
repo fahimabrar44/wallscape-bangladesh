@@ -33,7 +33,7 @@ export default function CartPage() {
           <p className="text-muted text-sm mb-8">Looks like you haven&apos;t added anything yet. Start exploring our premium wallpapers!</p>
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition"
+            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
           >
             <ShoppingBag size={18} />
             Continue Shopping
@@ -51,9 +51,9 @@ export default function CartPage() {
         <span className="text-dark font-medium">Cart</span>
       </div>
 
-      <h1 className="text-2xl lg:text-3xl font-bold mb-8">Shopping Cart</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold mb-8 text-gradient">Shopping Cart</h1>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
           {items.map((item) => {
             const price = item.product.discountPrice || item.product.price;
@@ -61,7 +61,7 @@ export default function CartPage() {
             const lineTotal = price * item.quantity;
 
             return (
-              <div key={item.product._id} className="bg-white rounded-xl border border-border p-4 flex gap-4">
+              <div key={item.product._id} className="card-modern p-4 flex gap-4">
                 <div className="relative w-24 h-24 lg:w-28 lg:h-28 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                   <Image src={imgSrc} alt={item.product.name} fill className="object-cover" sizes="112px" />
                 </div>
@@ -73,7 +73,7 @@ export default function CartPage() {
                     </div>
                     <button
                       onClick={() => removeItem(item.product._id)}
-                      className="p-1.5 text-muted hover:text-red-500 hover:bg-red-50 rounded-lg transition shrink-0"
+                      className="btn-ghost p-1.5 text-muted hover:text-red-500 shrink-0"
                       aria-label="Remove item"
                     >
                       <Trash2 size={16} />
@@ -82,12 +82,12 @@ export default function CartPage() {
                   <div className="flex items-end justify-between mt-3">
                     <div>
                       <p className="text-xs text-muted">Unit Price</p>
-                      <p className="font-semibold text-sm">{formatCurrency(price)}</p>
+                      <p className="price-current">{formatCurrency(price)}</p>
                     </div>
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => updateQuantity(item.product._id, item.quantity - 1)}
-                        className="w-8 h-8 flex items-center justify-center border border-border rounded-lg hover:bg-gray-50 transition"
+                        className="btn-ghost w-8 h-8 flex items-center justify-center p-0"
                         aria-label="Decrease quantity"
                       >
                         <Minus size={14} />
@@ -95,7 +95,7 @@ export default function CartPage() {
                       <span className="w-10 text-center font-medium text-sm">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.product._id, item.quantity + 1)}
-                        className="w-8 h-8 flex items-center justify-center border border-border rounded-lg hover:bg-gray-50 transition"
+                        className="btn-ghost w-8 h-8 flex items-center justify-center p-0"
                         aria-label="Increase quantity"
                       >
                         <Plus size={14} />
@@ -103,7 +103,7 @@ export default function CartPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-muted">Total</p>
-                      <p className="font-bold text-primary">{formatCurrency(lineTotal)}</p>
+                      <p className="font-bold price-current">{formatCurrency(lineTotal)}</p>
                     </div>
                   </div>
                 </div>
@@ -113,12 +113,12 @@ export default function CartPage() {
         </div>
 
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-border p-6 sticky top-24">
-            <h2 className="font-bold text-lg mb-4">Order Summary</h2>
+          <div className="card-modern p-6 sticky top-24">
+            <h2 className="font-bold text-lg mb-5">Order Summary</h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted">Subtotal ({items.length} item{items.length !== 1 ? 's' : ''})</span>
-                <span className="font-medium">{formatCurrency(subtotal)}</span>
+                <span className="price-current">{formatCurrency(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted">Delivery Charge</span>
@@ -126,7 +126,7 @@ export default function CartPage() {
                   {charge === 0 ? (
                     <span className="text-green-600 font-semibold">FREE</span>
                   ) : (
-                    formatCurrency(charge)
+                    <span className="price-current">{formatCurrency(charge)}</span>
                   )}
                 </span>
               </div>
@@ -138,19 +138,13 @@ export default function CartPage() {
               <hr className="border-border" />
               <div className="flex justify-between text-base">
                 <span className="font-bold">Grand Total</span>
-                <span className="font-bold text-primary">{formatCurrency(grandTotal)}</span>
+                <span className="font-bold price-current">{formatCurrency(grandTotal)}</span>
               </div>
             </div>
-            <Link
-              href="/checkout"
-              className="mt-6 w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-primary-dark transition"
-            >
+            <Link href="/checkout" className="btn-primary w-full mt-6">
               Proceed to Checkout
             </Link>
-            <Link
-              href="/products"
-              className="mt-3 w-full py-3 rounded-lg font-medium flex items-center justify-center gap-2 text-muted hover:text-dark border border-border hover:border-dark transition"
-            >
+            <Link href="/products" className="btn-ghost w-full mt-3">
               <ArrowLeft size={16} />
               Continue Shopping
             </Link>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, MessageCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, MessageCircle, Send } from 'lucide-react';
 import { api } from '@/lib/api';
 import { Category } from '@/types';
 
@@ -23,7 +23,8 @@ export default function Footer() {
   const { data: catData } = useQuery({
     queryKey: ['footer-categories'],
     queryFn: () => api.get<{ categories: Category[] }>('/api/categories?isActive=true'),
-    staleTime: 10 * 60 * 1000,
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
   });
 
   const footerCategories = catData?.categories?.length
@@ -33,10 +34,9 @@ export default function Footer() {
   return (
     <footer className="bg-dark text-white">
       <div className="container-custom py-12 lg:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
-          {/* Company Info */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">WS</span>
               </div>
@@ -45,23 +45,31 @@ export default function Footer() {
                 <p className="text-[10px] text-gray-400">BANGLADESH</p>
               </div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-4 max-w-sm">
+            <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
               Premium wallpaper & interior solutions provider in Bangladesh. Transform your space with our exquisite collection of PVC, vinyl, 3D, and luxury wallpapers.
             </p>
+            <div className="card-modern p-6 mb-6">
+              <h4 className="text-sm font-semibold mb-2">Stay Updated</h4>
+              <p className="text-xs text-gray-400 mb-3">Get updates on new arrivals and exclusive offers.</p>
+              <div className="flex gap-2">
+                <input type="email" placeholder="Your email" className="input-modern text-sm" />
+                <button className="btn-primary"><Send size={16} /></button>
+              </div>
+            </div>
             <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary transition"><Facebook size={16} /></a>
-              <a href="#" className="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary transition"><Instagram size={16} /></a>
-              <a href="#" className="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary transition"><Youtube size={16} /></a>
-              <a href="#" className="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-primary transition"><MessageCircle size={16} /></a>
+              <a href="#" className="glass w-9 h-9 rounded-lg flex items-center justify-center hover:bg-primary transition"><Facebook size={16} /></a>
+              <a href="#" className="glass w-9 h-9 rounded-lg flex items-center justify-center hover:bg-primary transition"><Instagram size={16} /></a>
+              <a href="#" className="glass w-9 h-9 rounded-lg flex items-center justify-center hover:bg-primary transition"><Youtube size={16} /></a>
+              <a href="#" className="glass w-9 h-9 rounded-lg flex items-center justify-center hover:bg-primary transition"><MessageCircle size={16} /></a>
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="font-semibold mb-4 text-sm">Quick Links</h4>
             <ul className="space-y-2.5">
               <FooterLink href="/">Home</FooterLink>
               <FooterLink href="/products">All Products</FooterLink>
+              <FooterLink href="/reviews">Customer Reviews</FooterLink>
               <FooterLink href="/projects">Our Projects</FooterLink>
               <FooterLink href="/blogs">Blog</FooterLink>
               <FooterLink href="/about">About Us</FooterLink>
@@ -69,7 +77,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
           <div>
             <h4 className="font-semibold mb-4 text-sm">Categories</h4>
             <ul className="space-y-2.5">
@@ -79,7 +86,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h4 className="font-semibold mb-4 text-sm">Contact Us</h4>
             <ul className="space-y-3">
@@ -103,7 +109,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
           <p>&copy; {new Date().getFullYear()} WALLSCAPE BANGLADESH. All rights reserved.</p>
           <div className="flex gap-4">

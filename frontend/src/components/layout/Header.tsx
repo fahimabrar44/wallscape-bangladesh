@@ -18,6 +18,7 @@ const fallbackCategories = [
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Products', href: '/products' },
+  { label: 'Reviews', href: '/reviews' },
   { label: 'Projects', href: '/projects' },
   { label: 'Blog', href: '/blogs' },
   { label: 'Contact', href: '/contact' },
@@ -36,7 +37,8 @@ export default function Header() {
   const { data: catData } = useQuery({
     queryKey: ['nav-categories'],
     queryFn: () => api.get<{ categories: Category[] }>('/api/categories?isActive=true'),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
   });
 
   const apiCategories = catData?.categories || [];

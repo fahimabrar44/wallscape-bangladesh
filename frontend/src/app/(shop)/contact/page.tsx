@@ -4,21 +4,41 @@ import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, Loader2, CheckCircle } from 'lucide-react';
 
-const contactInfo = [
+interface ContactForm {
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+}
+
+interface ContactInfoItem {
+  icon: typeof Phone;
+  label: string;
+  value: string;
+  href?: string;
+}
+
+interface BusinessHoursItem {
+  day: string;
+  hours: string;
+}
+
+const contactInfo: ContactInfoItem[] = [
   { icon: Phone, label: 'Phone', value: '+880 1700-000000', href: 'tel:+8801700000000' },
   { icon: Mail, label: 'Email', value: 'hello@wallscape.com.bd', href: 'mailto:hello@wallscape.com.bd' },
   { icon: MessageCircle, label: 'WhatsApp', value: '+880 1700-000000', href: 'https://wa.me/8801700000000' },
   { icon: MapPin, label: 'Address', value: 'House 12, Road 5, Gulshan 1, Dhaka 1212, Bangladesh' },
 ];
 
-const businessHours = [
+const businessHours: BusinessHoursItem[] = [
   { day: 'Saturday – Thursday', hours: '9:00 AM – 8:00 PM' },
   { day: 'Friday', hours: '2:00 PM – 8:00 PM' },
   { day: 'Public Holidays', hours: '10:00 AM – 6:00 PM' },
 ];
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
+  const [form, setForm] = useState<ContactForm>({ name: '', email: '', phone: '', subject: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   async function handleSubmit(e: FormEvent) {
@@ -47,13 +67,12 @@ export default function ContactPage() {
         <span className="text-dark font-medium">Contact Us</span>
       </div>
 
-      <h1 className="text-2xl lg:text-3xl font-bold mb-2">Contact Us</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold mb-2 text-gradient">Contact Us</h1>
       <p className="text-muted mb-10">We&apos;d love to hear from you. Get in touch with our team.</p>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        {/* Form */}
+      <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl border border-border p-6 lg:p-8">
+          <div className="card-modern p-8">
             <h2 className="text-xl font-bold mb-6">Send Us a Message</h2>
             {status === 'success' ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -62,10 +81,7 @@ export default function ContactPage() {
                 </div>
                 <h3 className="text-lg font-semibold mb-1">Message Sent!</h3>
                 <p className="text-muted text-sm">We&apos;ll get back to you within 24 hours.</p>
-                <button
-                  onClick={() => setStatus('idle')}
-                  className="mt-4 text-sm text-primary hover:underline"
-                >
+                <button onClick={() => setStatus('idle')} className="mt-4 btn-ghost text-sm">
                   Send another message
                 </button>
               </div>
@@ -79,7 +95,7 @@ export default function ContactPage() {
                       required
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="input-modern w-full"
                       placeholder="Your full name"
                     />
                   </div>
@@ -90,7 +106,7 @@ export default function ContactPage() {
                       required
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="input-modern w-full"
                       placeholder="your@email.com"
                     />
                   </div>
@@ -102,7 +118,7 @@ export default function ContactPage() {
                       type="tel"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="input-modern w-full"
                       placeholder="+880 1XXX-XXXXXX"
                     />
                   </div>
@@ -113,7 +129,7 @@ export default function ContactPage() {
                       required
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="input-modern w-full"
                       placeholder="How can we help?"
                     />
                   </div>
@@ -125,18 +141,14 @@ export default function ContactPage() {
                     rows={5}
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y"
+                    className="input-modern w-full resize-y"
                     placeholder="Tell us about your project or inquiry..."
                   />
                 </div>
                 {status === 'error' && (
                   <p className="text-sm text-red-500">Something went wrong. Please try again or email us directly.</p>
                 )}
-                <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition disabled:opacity-60"
-                >
+                <button type="submit" disabled={status === 'loading'} className="btn-primary">
                   {status === 'loading' ? (
                     <><Loader2 size={18} className="animate-spin" /> Sending...</>
                   ) : (
@@ -147,8 +159,7 @@ export default function ContactPage() {
             )}
           </div>
 
-          {/* Map */}
-          <div className="mt-8 bg-white rounded-xl border border-border overflow-hidden">
+          <div className="mt-6 card-modern overflow-hidden">
             <div className="p-4 border-b border-border">
               <h3 className="font-semibold flex items-center gap-2"><MapPin size={16} className="text-primary" /> Our Location</h3>
             </div>
@@ -165,10 +176,8 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-6">
-          {/* Contact Info */}
-          <div className="bg-white rounded-xl border border-border p-6">
+          <div className="card-modern p-6">
             <h3 className="font-bold mb-4">Get in Touch</h3>
             <div className="space-y-4">
               {contactInfo.map((item) => {
@@ -194,8 +203,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Business Hours */}
-          <div className="bg-white rounded-xl border border-border p-6">
+          <div className="card-modern p-6">
             <h3 className="font-bold mb-4 flex items-center gap-2"><Clock size={16} className="text-primary" /> Business Hours</h3>
             <div className="space-y-2">
               {businessHours.map((item) => (
@@ -207,15 +215,14 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Facebook Messenger */}
-          <div className="bg-white rounded-xl border border-border p-6">
+          <div className="card-modern p-6">
             <h3 className="font-bold mb-3 flex items-center gap-2"><MessageCircle size={16} className="text-primary" /> Facebook Messenger</h3>
             <p className="text-sm text-muted mb-4">Chat with us on Messenger for quick replies.</p>
             <a
               href="https://m.me/wallscapebangladesh"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#0099FF] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0088EE] transition"
+              className="btn-primary"
             >
               <MessageCircle size={16} />
               Message Us

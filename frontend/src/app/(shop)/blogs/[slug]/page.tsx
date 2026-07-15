@@ -16,9 +16,23 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
 
   const blog = data?.blog;
 
-  if (isLoading) return <div className="container-custom py-12"><div className="animate-pulse max-w-3xl mx-auto space-y-4"><div className="h-8 bg-gray-200 rounded w-2/3" /><div className="h-64 bg-gray-200 rounded" /><div className="h-4 bg-gray-200 rounded w-full" /><div className="h-4 bg-gray-200 rounded w-3/4" /></div></div>;
+  if (isLoading) return (
+    <div className="container-custom py-12">
+      <div className="max-w-3xl mx-auto space-y-5">
+        <div className="skeleton h-8 w-2/3" />
+        <div className="skeleton h-64 w-full" />
+        <div className="skeleton h-4 w-full" />
+        <div className="skeleton h-4 w-3/4" />
+      </div>
+    </div>
+  );
 
-  if (!blog) return <div className="container-custom py-12 text-center"><h2 className="text-xl font-medium">Blog not found</h2><Link href="/blogs" className="text-primary mt-2 inline-block">Back to blogs</Link></div>;
+  if (!blog) return (
+    <div className="container-custom py-12 text-center">
+      <h2 className="text-xl font-medium">Blog not found</h2>
+      <Link href="/blogs" className="text-primary mt-2 inline-block">Back to blogs</Link>
+    </div>
+  );
 
   return (
     <article className="container-custom py-8 lg:py-12">
@@ -38,16 +52,18 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           <span className="flex items-center gap-1"><User size={14} />{blog.author}</span>
         </div>
 
-        <h1 className="text-3xl lg:text-4xl font-bold mb-6">{blog.title}</h1>
+        <h1 className="text-gradient text-3xl lg:text-4xl font-bold mb-6">{blog.title}</h1>
 
-        <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
-          {blog.content}
+        <div className="card-modern p-8">
+          <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
+            {blog.content}
+          </div>
         </div>
 
         {blog.tags && blog.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border">
             {blog.tags.map((tag) => (
-              <span key={tag} className="px-3 py-1 bg-gray-100 rounded-full text-xs font-medium text-muted">#{tag}</span>
+              <span key={tag} className="badge badge-primary">#{tag}</span>
             ))}
           </div>
         )}

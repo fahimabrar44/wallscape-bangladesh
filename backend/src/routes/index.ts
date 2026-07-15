@@ -144,6 +144,7 @@ export async function registerRoutes(app: FastifyInstance) {
 
     // Reviews
     adminRoutes.get('/api/admin/reviews', reviews.getReviews);
+    adminRoutes.put('/api/admin/reviews/:id', reviews.updateReview);
     adminRoutes.put('/api/admin/reviews/:id/approve', reviews.approveReview);
     adminRoutes.delete('/api/admin/reviews/:id', reviews.deleteReview);
 

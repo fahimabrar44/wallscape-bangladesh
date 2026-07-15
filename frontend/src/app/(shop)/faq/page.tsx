@@ -4,7 +4,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 
-const faqs = [
+interface FAQItem {
+  q: string;
+  a: string;
+}
+
+interface FAQGroup {
+  category: string;
+  items: FAQItem[];
+}
+
+const faqs: FAQGroup[] = [
   {
     category: 'Orders & Payment',
     items: [
@@ -52,10 +62,14 @@ const faqs = [
 ];
 
 export default function FAQPage() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState('all');
+  const [openIndex, setOpenIndex] = useState<string | null>(null);
 
-  const toggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+  const allCategories = ['all', ...faqs.map((g) => g.category)];
+  const filteredFaqs = activeTab === 'all' ? faqs : faqs.filter((g) => g.category === activeTab);
+
+  const toggle = (key: string) => {
+    setOpenIndex(openIndex === key ? null : key);
   };
 
   return (
@@ -67,24 +81,32 @@ export default function FAQPage() {
       </div>
 
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl lg:text-3xl font-bold mb-2">Frequently Asked Questions</h1>
-        <p className="text-muted mb-10">Find answers to the most common questions about our products and services.</p>
+        <h1 className="text-2xl lg:text-3xl font-bold mb-2 text-gradient">Frequently Asked Questions</h1>
+        <p className="text-muted mb-6">Find answers to the most common questions about our products and services.</p>
 
-        {faqs.map((group, groupIndex) => (
+        <div className="flex flex-wrap gap-2 mb-8">
+          {allCategories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => { setActiveTab(cat); setOpenIndex(null); }}
+              className={activeTab === cat ? 'btn-primary' : 'btn-ghost'}
+            >
+              {cat === 'all' ? 'All' : cat}
+            </button>
+          ))}
+        </div>
+
+        {filteredFaqs.map((group) => (
           <div key={group.category} className="mb-8">
-            <h2 className="text-lg font-bold mb-4 text-primary">{group.category}</h2>
+            <h2 className="section-label mb-4">{group.category}</h2>
             <div className="space-y-2">
-              {group.items.map((item, itemIndex) => {
-                const globalIndex = faqs.slice(0, groupIndex).reduce((acc, g) => acc + g.items.length, 0) + itemIndex;
-                const isOpen = openIndex === globalIndex;
-
+              {group.items.map((item, idx) => {
+                const key = `${group.category}-${idx}`;
+                const isOpen = openIndex === key;
                 return (
-                  <div
-                    key={globalIndex}
-                    className={`bg-white rounded-xl border border-border overflow-hidden transition ${isOpen ? 'shadow-sm' : ''}`}
-                  >
+                  <div key={key} className="card-modern overflow-hidden">
                     <button
-                      onClick={() => toggle(globalIndex)}
+                      onClick={() => toggle(key)}
                       className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left font-medium text-sm lg:text-base hover:bg-gray-50/50 transition"
                     >
                       <span>{item.q}</span>
@@ -105,13 +127,10 @@ export default function FAQPage() {
           </div>
         ))}
 
-        <div className="bg-gradient-to-r from-primary/5 to-primary-light/5 rounded-xl border border-border p-6 text-center">
+        <div className="card-modern p-6 text-center">
           <h3 className="font-semibold mb-2">Still have questions?</h3>
           <p className="text-sm text-muted mb-4">Our support team is happy to help.</p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-dark transition"
-          >
+          <Link href="/contact" className="btn-primary">
             Contact Us
           </Link>
         </div>

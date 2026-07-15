@@ -150,7 +150,7 @@ export default function CheckoutPage() {
           <p className="text-muted text-sm mb-6">Add some items to your cart before checking out.</p>
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition"
+            className="btn-primary inline-flex items-center gap-2 px-8 py-3"
           >
             <ArrowLeft size={18} />
             Continue Shopping
@@ -170,13 +170,12 @@ export default function CheckoutPage() {
         <span className="text-dark font-medium">Checkout</span>
       </div>
 
-      <h1 className="text-2xl lg:text-3xl font-bold mb-8">Checkout</h1>
+      <h1 className="text-2xl lg:text-3xl font-bold mb-8 text-gradient">Checkout</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            {/* Contact Information */}
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="card-modern p-6">
               <h2 className="font-bold text-lg mb-5">Contact Information</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
@@ -186,7 +185,7 @@ export default function CheckoutPage() {
                   <input
                     {...register('name')}
                     placeholder="Your full name"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="input-modern w-full"
                   />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                 </div>
@@ -197,7 +196,7 @@ export default function CheckoutPage() {
                   <input
                     {...register('phone')}
                     placeholder="01XXXXXXXXX"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="input-modern w-full"
                   />
                   {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                 </div>
@@ -206,7 +205,7 @@ export default function CheckoutPage() {
                   <input
                     {...register('altPhone')}
                     placeholder="Optional"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="input-modern w-full"
                   />
                 </div>
                 <div>
@@ -214,15 +213,14 @@ export default function CheckoutPage() {
                   <input
                     {...register('email')}
                     placeholder="Optional"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="input-modern w-full"
                   />
                   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                 </div>
               </div>
             </div>
 
-            {/* Shipping Address */}
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="card-modern p-6">
               <h2 className="font-bold text-lg mb-5">Shipping Address</h2>
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
@@ -231,7 +229,7 @@ export default function CheckoutPage() {
                   </label>
                   <select
                     {...register('division')}
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white"
+                    className="select-modern w-full"
                   >
                     <option value="">Select division</option>
                     {divisions.map((d) => (
@@ -247,7 +245,7 @@ export default function CheckoutPage() {
                   <input
                     {...register('district')}
                     placeholder="District"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="input-modern w-full"
                   />
                   {errors.district && <p className="text-red-500 text-xs mt-1">{errors.district.message}</p>}
                 </div>
@@ -258,7 +256,7 @@ export default function CheckoutPage() {
                   <input
                     {...register('area')}
                     placeholder="Area / Thana"
-                    className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="input-modern w-full"
                   />
                   {errors.area && <p className="text-red-500 text-xs mt-1">{errors.area.message}</p>}
                 </div>
@@ -271,7 +269,7 @@ export default function CheckoutPage() {
                   {...register('fullAddress')}
                   rows={3}
                   placeholder="House, road, block, etc."
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+                  className="input-modern w-full resize-none"
                 />
                 {errors.fullAddress && <p className="text-red-500 text-xs mt-1">{errors.fullAddress.message}</p>}
               </div>
@@ -281,13 +279,12 @@ export default function CheckoutPage() {
                   {...register('deliveryNote')}
                   rows={2}
                   placeholder="Any special instructions (optional)"
-                  className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+                  className="input-modern w-full resize-none"
                 />
               </div>
             </div>
 
-            {/* Payment Method */}
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="card-modern p-6">
               <h2 className="font-bold text-lg mb-5">Payment Method</h2>
               <div className="space-y-4">
                 <label className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition ${paymentMethod === 'cod' ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}>
@@ -319,12 +316,12 @@ export default function CheckoutPage() {
               </div>
 
               {paymentMethod === 'manual' && (
-                <div className="mt-5 p-4 bg-gray-50 rounded-lg space-y-4">
+                <div className="mt-5 card-modern p-4 space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-1.5">Payment Method <span className="text-red-500">*</span></label>
                     <select
                       {...register('manualMethod')}
-                      className="w-full px-4 py-2.5 border border-border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      className="select-modern w-full"
                     >
                       <option value="">Select method</option>
                       {manualPaymentMethods.map((m) => (
@@ -344,7 +341,7 @@ export default function CheckoutPage() {
                     <input
                       {...register('transactionId')}
                       placeholder="Enter transaction ID"
-                      className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className="input-modern w-full"
                     />
                   </div>
                   <div>
@@ -366,15 +363,24 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={orderMutation.isPending}
-              className="w-full bg-primary text-white py-3.5 rounded-lg font-medium text-base hover:bg-primary-dark transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary w-full py-3.5 text-base"
             >
-              {orderMutation.isPending ? 'Placing Order...' : `Place Order — ${formatCurrency(grandTotal)}`}
+              {orderMutation.isPending ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Placing Order...
+                </span>
+              ) : (
+                `Place Order — ${formatCurrency(grandTotal)}`
+              )}
             </button>
           </div>
 
-          {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl border border-border p-6 sticky top-24">
+            <div className="card-modern p-6 sticky top-24">
               <h2 className="font-bold text-lg mb-5">Order Summary</h2>
               <div className="space-y-4 mb-5">
                 {items.map((item) => {
@@ -388,7 +394,7 @@ export default function CheckoutPage() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{item.product.name}</p>
                         <p className="text-xs text-muted">Qty: {item.quantity}</p>
-                        <p className="text-sm font-semibold text-primary mt-0.5">{formatCurrency(price * item.quantity)}</p>
+                        <p className="price-current text-sm mt-0.5">{formatCurrency(price * item.quantity)}</p>
                       </div>
                     </div>
                   );
@@ -398,7 +404,7 @@ export default function CheckoutPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted">Subtotal</span>
-                  <span className="font-medium">{formatCurrency(subtotal)}</span>
+                  <span className="price-current">{formatCurrency(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted">Delivery Charge</span>
@@ -406,7 +412,7 @@ export default function CheckoutPage() {
                     {charge === 0 ? (
                       <span className="text-green-600 font-semibold">FREE</span>
                     ) : (
-                      formatCurrency(charge)
+                      <span className="price-current">{formatCurrency(charge)}</span>
                     )}
                   </span>
                 </div>
@@ -419,7 +425,7 @@ export default function CheckoutPage() {
               <hr className="border-border my-4" />
               <div className="flex justify-between text-base">
                 <span className="font-bold">Grand Total</span>
-                <span className="font-bold text-primary">{formatCurrency(grandTotal)}</span>
+                <span className="font-bold price-current">{formatCurrency(grandTotal)}</span>
               </div>
             </div>
           </div>

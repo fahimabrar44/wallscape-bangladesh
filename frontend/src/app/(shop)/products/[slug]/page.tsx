@@ -49,7 +49,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   if (productLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-emerald-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     )
   }
@@ -58,10 +58,10 @@ export default function ProductPage({ params }: ProductPageProps) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
         <XCircle className="mb-4 h-12 w-12 text-red-400" />
-        <h2 className="text-xl font-semibold text-gray-800">Product not found</h2>
+        <h2 className="text-xl font-semibold">Product not found</h2>
         <Link
           href="/products"
-          className="mt-4 text-emerald-600 underline underline-offset-4 hover:text-emerald-700"
+          className="mt-4 btn-ghost"
         >
           Back to products
         </Link>
@@ -99,21 +99,19 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      {/* Breadcrumb */}
-      <nav className="mb-8 flex items-center gap-2 text-sm text-gray-500">
-        <Link href="/" className="hover:text-emerald-600">
+      <nav className="mb-8 flex items-center gap-2 text-sm text-muted">
+        <Link href="/" className="hover:text-primary transition-colors">
           Home
         </Link>
         <span>/</span>
-        <Link href="/products" className="hover:text-emerald-600">
+        <Link href="/products" className="hover:text-primary transition-colors">
           Products
         </Link>
         <span>/</span>
-        <span className="truncate text-gray-900 font-medium">{product.name}</span>
+        <span className="truncate font-medium">{product.name}</span>
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        {/* Gallery */}
         <div className="space-y-4">
           <div
             className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-gray-100 shadow-lg"
@@ -129,7 +127,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
             {isDiscounted && (
-              <span className="absolute left-4 top-4 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white shadow-md">
+              <span className="badge-gold absolute left-4 top-4">
                 {Math.round(((product.price - displayPrice) / product.price) * 100)}% OFF
               </span>
             )}
@@ -142,8 +140,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                   onClick={() => setSelectedImage(i)}
                   className={`relative aspect-[4/5] w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
                     i === selectedImage
-                      ? 'border-emerald-600 ring-2 ring-emerald-200'
-                      : 'border-gray-200 hover:border-gray-400'
+                      ? 'border-primary ring-2 ring-primary/20'
+                      : 'border-border hover:border-primary/50'
                   }`}
                 >
                   <Image
@@ -159,19 +157,17 @@ export default function ProductPage({ params }: ProductPageProps) {
           )}
         </div>
 
-        {/* Details */}
         <div className="flex flex-col gap-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 lg:text-4xl">
+            <h1 className="text-3xl lg:text-4xl font-bold text-gradient">
               {product.name}
             </h1>
-            <p className="mt-1 text-sm text-gray-500">{product.productCode}</p>
+            <p className="mt-1 text-sm text-muted">{product.productCode}</p>
           </div>
 
-          {/* Rating */}
           {reviews.length > 0 && (
             <div className="flex items-center gap-2">
-              <div className="flex">
+              <div className="stars">
                 {Array.from({ length: 5 }, (_, i) => (
                   <Star
                     key={i}
@@ -183,30 +179,28 @@ export default function ProductPage({ params }: ProductPageProps) {
                   />
                 ))}
               </div>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted">
                 {averageRating.toFixed(1)} ({reviews.length} reviews)
               </span>
             </div>
           )}
 
-          {/* Price */}
           <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-emerald-700">
+            <span className="price-current text-3xl">
               {formatCurrency(displayPrice)}
             </span>
             {isDiscounted && (
-              <span className="text-lg text-gray-400 line-through">
+              <span className="price-original text-lg">
                 {formatCurrency(product.price)}
               </span>
             )}
           </div>
 
-          {/* Stock */}
           <div className="flex items-center gap-2">
             {product.inStock ? (
               <>
-                <CheckCircle className="h-5 w-5 text-emerald-600" />
-                <span className="font-medium text-emerald-700">In Stock</span>
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <span className="font-medium text-green-700">In Stock</span>
               </>
             ) : (
               <>
@@ -216,33 +210,31 @@ export default function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
 
-          {/* Installation Badge */}
           {product.installationAvailable && (
-            <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-              <CheckCircle className="h-5 w-5 shrink-0 text-emerald-600" />
-              <span>
+            <div className="card-modern flex items-center gap-3 px-4 py-3">
+              <CheckCircle className="h-5 w-5 shrink-0 text-primary" />
+              <span className="text-sm">
                 Professional installation service available for this product
               </span>
             </div>
           )}
 
-          {/* Quantity + Add to Cart */}
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center rounded-xl border border-gray-300 bg-white">
+            <div className="flex items-center rounded-xl border border-border bg-white">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 disabled={!product.inStock}
-                className="flex h-12 w-12 items-center justify-center text-lg font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-30 rounded-l-xl transition-colors"
+                className="flex h-12 w-12 items-center justify-center text-lg font-medium hover:bg-gray-50 disabled:opacity-30 rounded-l-xl transition-colors"
               >
                 -
               </button>
-              <span className="flex h-12 w-16 items-center justify-center border-x border-gray-300 text-base font-semibold">
+              <span className="flex h-12 w-16 items-center justify-center border-x border-border text-base font-semibold">
                 {quantity}
               </span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
                 disabled={!product.inStock}
-                className="flex h-12 w-12 items-center justify-center text-lg font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-30 rounded-r-xl transition-colors"
+                className="flex h-12 w-12 items-center justify-center text-lg font-medium hover:bg-gray-50 disabled:opacity-30 rounded-r-xl transition-colors"
               >
                 +
               </button>
@@ -251,7 +243,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             <button
               onClick={() => addItem({ product, quantity })}
               disabled={!product.inStock}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 py-3 font-semibold text-white shadow-lg shadow-emerald-200 hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-50 transition-all min-w-[160px]"
+              className="btn-primary flex flex-1 items-center justify-center gap-2 min-w-[160px]"
             >
               <ShoppingCart className="h-5 w-5" />
               Add to Cart
@@ -260,48 +252,41 @@ export default function ProductPage({ params }: ProductPageProps) {
             <button
               onClick={() => addItem({ product, quantity })}
               disabled={!product.inStock}
-              className="flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-6 py-3 font-semibold text-white shadow-lg shadow-amber-200 hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
+              className="btn-secondary flex items-center justify-center gap-2"
             >
               <Zap className="h-5 w-5" />
               Buy Now
             </button>
           </div>
 
-          {/* WhatsApp Inquiry */}
           <a
             href={`https://wa.me/880XXXXXXXXX?text=${encodeURIComponent(`Hi! I'm interested in "${product.name}" (${product.productCode}).`)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-xl border border-emerald-600 px-6 py-3 font-medium text-emerald-700 hover:bg-emerald-50 transition-colors"
+            className="btn-ghost flex items-center justify-center gap-2"
           >
             <MessageCircle className="h-5 w-5" />
             Inquiry via WhatsApp
           </a>
 
-          {/* Description */}
           {product.description && (
             <div>
-              <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                Description
-              </h2>
-              <p className="text-gray-600 leading-relaxed">{product.description}</p>
+              <h2 className="section-label mb-3">Description</h2>
+              <p className="text-muted leading-relaxed">{product.description}</p>
             </div>
           )}
 
-          {/* Specifications */}
           {specs.length > 0 && (
             <div>
-              <h2 className="mb-3 text-lg font-semibold text-gray-900">
-                Specifications
-              </h2>
-              <div className="divide-y divide-gray-100 rounded-xl border border-gray-200">
+              <h2 className="section-label mb-3">Specifications</h2>
+              <div className="card-modern divide-y divide-border/50 overflow-hidden">
                 {specs.map((spec) => (
                   <div
                     key={spec.label}
-                    className="flex justify-between px-4 py-3 text-sm"
+                    className="flex justify-between px-5 py-3 text-sm"
                   >
-                    <span className="text-gray-500">{spec.label}</span>
-                    <span className="font-medium text-gray-900">{spec.value}</span>
+                    <span className="text-muted">{spec.label}</span>
+                    <span className="font-medium">{spec.value}</span>
                   </div>
                 ))}
               </div>
@@ -310,10 +295,9 @@ export default function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
-      {/* Related Products */}
       {relatedProducts.length > 0 && (
         <section className="mt-16">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900">
+          <h2 className="section-label text-2xl mb-6">
             Related Products
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -321,7 +305,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               <Link
                 key={rp.id}
                 href={`/products/${rp.slug}`}
-                className="group rounded-2xl bg-white p-3 shadow-md transition-shadow hover:shadow-xl"
+                className="group card-premium p-3 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="relative mb-3 aspect-[4/5] overflow-hidden rounded-xl bg-gray-100">
                   <Image
@@ -332,20 +316,20 @@ export default function ProductPage({ params }: ProductPageProps) {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                   {rp.discountPrice && (
-                    <span className="absolute left-2 top-2 rounded-full bg-red-500 px-2 py-0.5 text-xs font-bold text-white">
+                    <span className="badge-gold absolute left-2 top-2">
                       {Math.round(((rp.price - rp.discountPrice) / rp.price) * 100)}%
                     </span>
                   )}
                 </div>
-                <h3 className="truncate font-medium text-gray-900 group-hover:text-emerald-700 transition-colors">
+                <h3 className="truncate font-medium group-hover:text-primary transition-colors">
                   {rp.name}
                 </h3>
                 <div className="mt-1 flex items-baseline gap-2">
-                  <span className="font-semibold text-emerald-700">
+                  <span className="price-current">
                     {formatCurrency(rp.discountPrice || rp.price)}
                   </span>
                   {rp.discountPrice && (
-                    <span className="text-xs text-gray-400 line-through">
+                    <span className="price-original">
                       {formatCurrency(rp.price)}
                     </span>
                   )}
@@ -356,22 +340,26 @@ export default function ProductPage({ params }: ProductPageProps) {
         </section>
       )}
 
-      {/* Reviews */}
       <section className="mt-16">
-        <h2 className="mb-6 text-2xl font-bold text-gray-900">
-          Reviews {reviews.length > 0 && `(${reviews.length})`}
-        </h2>
+        <div className="flex items-center gap-3 mb-6">
+          <h2 className="section-label text-2xl">
+            Reviews
+          </h2>
+          {reviews.length > 0 && (
+            <span className="badge">{reviews.length}</span>
+          )}
+        </div>
         {reviews.length === 0 ? (
-          <p className="text-gray-500">No reviews yet.</p>
+          <p className="text-muted">No reviews yet.</p>
         ) : (
-          <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             {reviews.map((review) => (
               <div
                 key={review.id}
-                className="rounded-2xl border border-gray-200 p-5 shadow-sm"
+                className="card-modern p-5"
               >
                 <div className="mb-2 flex items-center gap-3">
-                  <div className="flex">
+                  <div className="stars">
                     {Array.from({ length: 5 }, (_, i) => (
                       <Star
                         key={i}
@@ -383,12 +371,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-medium text-gray-900">
-                    {review.author}
-                  </span>
-                  <span className="text-xs text-gray-400">{review.date}</span>
+                  <span className="text-sm font-medium">{review.author}</span>
+                  <span className="text-xs text-muted">{review.date}</span>
                 </div>
-                <p className="text-gray-600 leading-relaxed">{review.comment}</p>
+                <p className="text-muted leading-relaxed">{review.comment}</p>
               </div>
             ))}
           </div>

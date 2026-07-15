@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { api } from '@/lib/api';
 import { formatCurrency, getImageUrl, formatDate } from '@/lib/utils';
 import { Order, OrderStatus } from '@/types';
-import { Package, Search, Truck, CheckCircle, Clock, XCircle, ChevronRight } from 'lucide-react';
+import { Package, Search, Truck, CheckCircle, Clock, XCircle } from 'lucide-react';
 
 const statusFlow: OrderStatus[] = ['pending', 'confirmed', 'processing', 'packed', 'shipped', 'delivered'];
 
@@ -52,11 +52,11 @@ export default function TrackOrderPage() {
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <Package size={32} className="text-primary" />
           </div>
-          <h1 className="text-2xl lg:text-3xl font-bold mb-2">Track Your Order</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold mb-2 text-gradient">Track Your Order</h1>
           <p className="text-muted">Enter your order number or phone number to track your order</p>
         </div>
 
-        <form onSubmit={handleSearch} className="bg-white rounded-xl border border-border p-6 mb-8">
+        <form onSubmit={handleSearch} className="card-modern p-6 mb-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium mb-1">Order Number</label>
@@ -65,7 +65,7 @@ export default function TrackOrderPage() {
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
                 placeholder="e.g. WS-XXXX-XXXX"
-                className="w-full px-4 py-2.5 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="input-modern w-full"
               />
             </div>
             <div>
@@ -75,14 +75,11 @@ export default function TrackOrderPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="e.g. 01XXXXXXXXX"
-                className="w-full px-4 py-2.5 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="input-modern w-full"
               />
             </div>
           </div>
-          <button
-            type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition"
-          >
+          <button type="submit" className="btn-primary w-full">
             <Search size={18} /> Track Order
           </button>
         </form>
@@ -95,7 +92,7 @@ export default function TrackOrderPage() {
         )}
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <div className="glass-card p-6 text-center border-red-200">
             <XCircle size={32} className="text-red-500 mx-auto mb-2" />
             <p className="font-medium text-red-700">Order not found</p>
             <p className="text-sm text-red-500 mt-1">Please check your order number or phone number and try again</p>
@@ -104,8 +101,7 @@ export default function TrackOrderPage() {
 
         {order && (
           <div className="space-y-6">
-            {/* Order Header */}
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="card-modern p-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                 <div>
                   <p className="text-sm text-muted">Order Number</p>
@@ -117,24 +113,21 @@ export default function TrackOrderPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  isCancelled ? 'bg-red-100 text-red-700' : 'bg-primary/10 text-primary'
-                }`}>
+                <span className={`badge ${isCancelled ? 'text-red-600 bg-red-100' : 'badge-primary'}`}>
                   {statusConfig[order.orderStatus].label}
                 </span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  order.paymentStatus === 'verified' ? 'bg-green-100 text-green-700' :
-                  order.paymentStatus === 'rejected' ? 'bg-red-100 text-red-700' :
-                  'bg-yellow-100 text-yellow-700'
+                <span className={`badge ${
+                  order.paymentStatus === 'verified' ? 'text-green-700 bg-green-100' :
+                  order.paymentStatus === 'rejected' ? 'text-red-700 bg-red-100' :
+                  'text-yellow-700 bg-yellow-100'
                 }`}>
                   Payment: {order.paymentStatus}
                 </span>
               </div>
             </div>
 
-            {/* Status Timeline */}
             {!isCancelled && (
-              <div className="bg-white rounded-xl border border-border p-6">
+              <div className="card-modern p-6">
                 <h3 className="font-semibold mb-6">Order Progress</h3>
                 <div className="relative">
                   {statusFlow.map((status, i) => {
@@ -165,8 +158,7 @@ export default function TrackOrderPage() {
               </div>
             )}
 
-            {/* Customer Info */}
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="card-modern p-6">
               <h3 className="font-semibold mb-3">Customer Details</h3>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
@@ -187,8 +179,7 @@ export default function TrackOrderPage() {
               </div>
             </div>
 
-            {/* Order Items */}
-            <div className="bg-white rounded-xl border border-border p-6">
+            <div className="card-modern p-6">
               <h3 className="font-semibold mb-4">Order Items</h3>
               <div className="space-y-3">
                 {order.items.map((item, i) => (

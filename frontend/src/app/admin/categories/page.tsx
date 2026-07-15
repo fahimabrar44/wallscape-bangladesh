@@ -18,21 +18,28 @@ export default function AdminCategoriesPage() {
     queryFn: () => api.get<{ categories: Category[] }>('/api/categories'),
   });
 
+  function invalidateAll() {
+    queryClient.invalidateQueries({ queryKey: ['admin-categories'] });
+    queryClient.invalidateQueries({ queryKey: ['nav-categories'] });
+    queryClient.invalidateQueries({ queryKey: ['footer-categories'] });
+    queryClient.invalidateQueries({ queryKey: ['categories'] });
+  }
+
   const createMutation = useMutation({
     mutationFn: (data: any) => api.post('/api/categories', data),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); toast.success('Category created'); closeModal(); },
+    onSuccess: () => { invalidateAll(); toast.success('Category created'); closeModal(); },
     onError: (err: any) => toast.error(err.message),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) => api.put(`/api/categories/${id}`, data),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); toast.success('Category updated'); closeModal(); },
+    onSuccess: () => { invalidateAll(); toast.success('Category updated'); closeModal(); },
     onError: (err: any) => toast.error(err.message),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => api.delete(`/api/categories/${id}`),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); toast.success('Category deleted'); },
+    onSuccess: () => { invalidateAll(); toast.success('Category deleted'); },
     onError: (err: any) => toast.error(err.message),
   });
 

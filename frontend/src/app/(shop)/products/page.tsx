@@ -8,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { formatCurrency, getImageUrl } from '@/lib/utils';
 import { Product, Category, Pagination } from '@/types';
-import { SlidersHorizontal, Grid3X3, List, ChevronDown } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 
 const sortOptions = [
   { value: 'newest', label: 'Newest' },
@@ -51,46 +51,44 @@ export default function ProductsPage() {
 
   return (
     <div className="container-custom py-8">
-      {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted mb-6">
-        <Link href="/" className="hover:text-primary">Home</Link>
+        <Link href="/" className="hover:text-primary transition-colors">Home</Link>
         <span>/</span>
         <span className="text-dark font-medium">Products</span>
       </div>
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl lg:text-3xl font-bold">All Products</h1>
+        <h1 className="text-3xl lg:text-4xl font-bold text-gradient">All Products</h1>
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="lg:hidden flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm"
+          className="lg:hidden btn-ghost"
         >
           <SlidersHorizontal size={16} /> Filters
         </button>
       </div>
 
       <div className="flex gap-8">
-        {/* Sidebar filters */}
         <aside className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-64 shrink-0`}>
-          <div className="bg-white rounded-xl border border-border p-5 sticky top-24">
-            {/* Search */}
-            <div className="mb-5">
-              <h3 className="font-semibold text-sm mb-2">Search</h3>
+          <div className="card-modern p-5 sticky top-24 space-y-6">
+            <div>
+              <h3 className="section-label mb-2">Search</h3>
               <input
                 type="text"
                 value={filters.search}
                 onChange={(e) => { setFilters({ ...filters, search: e.target.value }); setPage(1); }}
                 placeholder="Search products..."
-                className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="input-modern w-full"
               />
             </div>
 
-            {/* Category */}
-            <div className="mb-5">
-              <h3 className="font-semibold text-sm mb-2">Category</h3>
-              <div className="space-y-1.5">
+            <hr className="border-border/50" />
+
+            <div>
+              <h3 className="section-label mb-3">Category</h3>
+              <div className="space-y-1">
                 <button
                   onClick={() => { setFilters({ ...filters, category: '' }); setPage(1); }}
-                  className={`block text-sm w-full text-left px-2 py-1.5 rounded ${!filters.category ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-gray-50'}`}
+                  className={`block text-sm w-full text-left px-3 py-2 rounded-lg transition-all ${!filters.category ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-gray-50'}`}
                 >
                   All Categories
                 </button>
@@ -98,7 +96,7 @@ export default function ProductsPage() {
                   <button
                     key={cat._id}
                     onClick={() => { setFilters({ ...filters, category: cat._id }); setPage(1); }}
-                    className={`block text-sm w-full text-left px-2 py-1.5 rounded ${filters.category === cat._id ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-gray-50'}`}
+                    className={`block text-sm w-full text-left px-3 py-2 rounded-lg transition-all ${filters.category === cat._id ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-gray-50'}`}
                   >
                     {cat.name}
                   </button>
@@ -106,34 +104,36 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            {/* Price Range */}
-            <div className="mb-5">
-              <h3 className="font-semibold text-sm mb-2">Price Range</h3>
+            <hr className="border-border/50" />
+
+            <div>
+              <h3 className="section-label mb-2">Price Range</h3>
               <div className="flex gap-2">
                 <input
                   type="number"
                   value={filters.minPrice}
                   onChange={(e) => { setFilters({ ...filters, minPrice: e.target.value }); setPage(1); }}
                   placeholder="Min"
-                  className="w-full px-2 py-1.5 border border-border rounded text-sm"
+                  className="input-modern w-full"
                 />
                 <input
                   type="number"
                   value={filters.maxPrice}
                   onChange={(e) => { setFilters({ ...filters, maxPrice: e.target.value }); setPage(1); }}
                   placeholder="Max"
-                  className="w-full px-2 py-1.5 border border-border rounded text-sm"
+                  className="input-modern w-full"
                 />
               </div>
             </div>
 
-            {/* Sort */}
+            <hr className="border-border/50" />
+
             <div>
-              <h3 className="font-semibold text-sm mb-2">Sort By</h3>
+              <h3 className="section-label mb-2">Sort By</h3>
               <select
                 value={filters.sort}
                 onChange={(e) => { setFilters({ ...filters, sort: e.target.value }); setPage(1); }}
-                className="w-full px-3 py-2 border border-border rounded-lg text-sm bg-white"
+                className="select-modern w-full"
               >
                 {sortOptions.map((opt) => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -143,17 +143,16 @@ export default function ProductsPage() {
           </div>
         </aside>
 
-        {/* Product grid */}
         <div className="flex-1">
           {isLoading ? (
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="bg-white rounded-xl border border-border overflow-hidden animate-pulse">
-                  <div className="aspect-[3/4] bg-gray-200" />
-                  <div className="p-4 space-y-2">
-                    <div className="h-3 bg-gray-200 rounded w-1/3" />
-                    <div className="h-4 bg-gray-200 rounded w-2/3" />
-                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                <div key={i} className="card-modern overflow-hidden">
+                  <div className="aspect-[3/4] skeleton" />
+                  <div className="p-4 space-y-3">
+                    <div className="h-3 skeleton rounded w-1/3" />
+                    <div className="h-4 skeleton rounded w-2/3" />
+                    <div className="h-4 skeleton rounded w-1/2" />
                   </div>
                 </div>
               ))}
@@ -165,23 +164,23 @@ export default function ProductsPage() {
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <p className="text-sm text-muted">{pagination?.total || 0} products found</p>
               </div>
+
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </div>
 
-              {/* Pagination */}
               {pagination && pagination.pages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-10">
-                  {Array.from({ length: pagination.pages }).slice(0, 10).map((_, i) => (
+                <div className="flex items-center justify-center gap-2 mt-12">
+                  {Array.from({ length: Math.min(pagination.pages, 10) }).map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setPage(i + 1)}
-                      className={`w-10 h-10 rounded-lg text-sm font-medium transition ${page === i + 1 ? 'bg-primary text-white' : 'bg-white border border-border hover:border-primary'}`}
+                      className={`w-10 h-10 rounded-xl text-sm font-medium transition-all ${page === i + 1 ? 'btn-primary' : 'btn-ghost'}`}
                     >
                       {i + 1}
                     </button>
@@ -202,21 +201,21 @@ function ProductCard({ product }: { product: Product }) {
   const hasDiscount = !!product.discountPrice;
 
   return (
-    <Link href={`/products/${product.slug}`} className="group bg-white rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all">
+    <Link href={`/products/${product.slug}`} className="group card-premium overflow-hidden hover:-translate-y-1 transition-all duration-300">
       <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
         <Image src={imgSrc} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, 33vw" />
         {hasDiscount && (
-          <span className="absolute top-2 left-2 bg-gold text-white text-xs font-semibold px-2 py-1 rounded-md">
+          <span className="badge-gold absolute top-2 left-2">
             -{Math.round(((product.price - product.discountPrice!) / product.price) * 100)}%
           </span>
         )}
       </div>
-      <div className="p-3 lg:p-4">
+      <div className="p-4">
         <p className="text-xs text-muted mb-1">{product.productCode}</p>
-        <h3 className="font-medium text-sm lg:text-base line-clamp-2 group-hover:text-primary transition">{product.name}</h3>
+        <h3 className="font-medium text-sm lg:text-base line-clamp-2 group-hover:text-primary transition-colors">{product.name}</h3>
         <div className="flex items-center gap-2 mt-2">
-          <span className="font-bold text-primary">{formatCurrency(price)}</span>
-          {hasDiscount && <span className="text-xs text-muted line-through">{formatCurrency(product.price)}</span>}
+          <span className="price-current">{formatCurrency(price)}</span>
+          {hasDiscount && <span className="price-original">{formatCurrency(product.price)}</span>}
         </div>
       </div>
     </Link>

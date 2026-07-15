@@ -27,6 +27,17 @@ export async function approveReview(request: FastifyRequest, reply: FastifyReply
   reply.send({ review });
 }
 
+export async function updateReview(request: FastifyRequest, reply: FastifyReply) {
+  const { id } = request.params as any;
+  const data = request.body as any;
+  const review = await Review.findByIdAndUpdate(id, data, { new: true });
+  if (!review) {
+    reply.status(404).send({ message: 'Review not found' });
+    return;
+  }
+  reply.send({ review });
+}
+
 export async function deleteReview(request: FastifyRequest, reply: FastifyReply) {
   const { id } = request.params as any;
   await Review.findByIdAndDelete(id);

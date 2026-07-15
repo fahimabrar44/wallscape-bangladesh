@@ -77,7 +77,7 @@ export const orderSchema = z.object({
 });
 
 export const reviewSchema = z.object({
-  product: z.string(),
+  product: z.string().optional(),
   customerName: z.string().min(2),
   rating: z.number().min(1).max(5),
   review: z.string().min(5),
