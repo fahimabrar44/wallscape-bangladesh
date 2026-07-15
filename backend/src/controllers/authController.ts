@@ -19,7 +19,7 @@ export async function login(request: FastifyRequest, reply: FastifyReply) {
   admin.lastLogin = new Date();
   await admin.save();
 
-  const token = request.jwt.sign({ id: admin._id, role: admin.role });
+  const token = await reply.jwtSign({ id: admin._id, role: admin.role });
 
   reply.send({
     token,

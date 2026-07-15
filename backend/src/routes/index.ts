@@ -114,11 +114,15 @@ export async function registerRoutes(app: FastifyInstance) {
     adminRoutes.put('/api/auth/profile', auth.updateProfile);
     adminRoutes.put('/api/auth/change-password', auth.changePassword);
 
-    // Admin management (super_admin only)
-    adminRoutes.post('/api/admins', { preHandler: [authorize('super_admin')] }, auth.createAdmin);
-    adminRoutes.get('/api/admins', { preHandler: [authorize('super_admin')] }, auth.getAdmins);
-    adminRoutes.put('/api/admins/:id', { preHandler: [authorize('super_admin')] }, auth.updateAdmin);
-    adminRoutes.delete('/api/admins/:id', { preHandler: [authorize('super_admin')] }, auth.deleteAdmin);
+    // Admin management (super_admin only) - register sub-routes with authorize hook
+    const superAdminRoutes = async (fastify: FastifyInstance) => {
+      fastify.addHook('preHandler', authorize('super_admin'));
+      fastify.post('/api/admins', auth.createAdmin);
+      fastify.get('/api/admins', auth.getAdmins);
+      fastify.put('/api/admins/:id', auth.updateAdmin);
+      fastify.delete('/api/admins/:id', auth.deleteAdmin);
+    };
+    adminRoutes.register(superAdminRoutes);
 
     // Categories
     adminRoutes.post('/api/categories', categories.createCategory);

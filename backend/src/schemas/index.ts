@@ -20,6 +20,7 @@ export const categorySchema = z.object({
 export const productSchema = z.object({
   name: z.string().min(2),
   category: z.string(),
+  productCode: z.string().optional(),
   brand: z.string().optional(),
   material: z.string().optional(),
   color: z.string().optional(),

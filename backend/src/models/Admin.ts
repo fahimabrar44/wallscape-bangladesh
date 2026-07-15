@@ -39,8 +39,8 @@ adminSchema.methods.comparePassword = async function (password: string): Promise
 
 adminSchema.set('toJSON', {
   transform: (_doc, ret) => {
-    delete ret.password;
-    return ret;
+    const { password: _, ...rest } = ret;
+    return rest;
   },
 });
 
