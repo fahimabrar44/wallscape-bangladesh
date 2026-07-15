@@ -5,7 +5,7 @@ export const config = {
   mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/wallscape',
   jwtSecret: process.env.JWT_SECRET || 'super-secret-jwt-key-change-in-production',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  corsOrigin: process.env.CORS_ORIGIN || '*',
   nodeEnv: process.env.NODE_ENV || 'development',
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
