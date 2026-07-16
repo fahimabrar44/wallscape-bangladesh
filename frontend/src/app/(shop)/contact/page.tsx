@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
+import { api } from '@/lib/api';
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, Loader2, CheckCircle } from 'lucide-react';
 
 interface ContactForm {
@@ -45,13 +46,7 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus('loading');
     try {
-      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      const res = await fetch(`${API_BASE}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error('Failed to send');
+      await api.post('/api/contact', form);
       setStatus('success');
       setForm({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch {

@@ -20,7 +20,7 @@ const sortOptions = [
 
 const materialOptions = ['PVC', 'Vinyl', 'Non-Woven', 'Fabric', 'Natural', '3D Effect'];
 const colorOptions = ['White', 'Beige', 'Green', 'Blue', 'Gold', 'Gray', 'Black', 'Multicolor'];
-const styleOptions = ['Modern', 'Classic', 'Minimal', 'Luxury', 'Nature', 'Abstract', 'Textured'];
+const patternOptions = ['Modern', 'Classic', 'Minimal', 'Luxury', 'Nature', 'Abstract', 'Textured'];
 
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -32,7 +32,7 @@ function ProductsContent() {
     maxPrice: searchParams.get('maxPrice') || '',
     material: searchParams.get('material') || '',
     color: searchParams.get('color') || '',
-    style: searchParams.get('style') || '',
+    pattern: searchParams.get('pattern') || searchParams.get('style') || searchParams.get('tag') || '',
   });
   const [page, setPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
@@ -65,7 +65,7 @@ function ProductsContent() {
   }
 
   function clearAll() {
-    setFilters({ category: '', sort: 'newest', search: '', minPrice: '', maxPrice: '', material: '', color: '', style: '' });
+    setFilters({ category: '', sort: 'newest', search: '', minPrice: '', maxPrice: '', material: '', color: '', pattern: '' });
     setPage(1);
   }
 
@@ -161,12 +161,12 @@ function ProductsContent() {
 
               <hr className="border-border/50" />
 
-              {/* Style */}
+              {/* Pattern */}
               <div>
-                <h3 className="section-label mb-3">Style</h3>
+                <h3 className="section-label mb-3">Pattern</h3>
                 <div className="flex flex-wrap gap-2">
-                  {styleOptions.map((s) => (
-                    <button key={s} onClick={() => { setFilters({ ...filters, style: filters.style === s ? '' : s }); setPage(1); }} className={`text-xs px-3 py-1.5 rounded-full border transition-all ${filters.style === s ? 'border-primary bg-primary text-white' : 'border-border hover:border-primary/50 text-gray-700'}`}>{s}</button>
+                  {patternOptions.map((s) => (
+                    <button key={s} onClick={() => { setFilters({ ...filters, pattern: filters.pattern === s ? '' : s }); setPage(1); }} className={`text-xs px-3 py-1.5 rounded-full border transition-all ${filters.pattern === s ? 'border-primary bg-primary text-white' : 'border-border hover:border-primary/50 text-gray-700'}`}>{s}</button>
                   ))}
                 </div>
               </div>
