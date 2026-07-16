@@ -33,6 +33,7 @@ export function buildFilters(filters: Record<string, any>) {
   if (filters.material) query.material = filters.material;
   if (filters.color) query.color = filters.color;
   if (filters.pattern) query.pattern = filters.pattern;
+  if (filters.room) query.room = filters.room;
   if (filters.minPrice || filters.maxPrice) {
     query.price = {};
     if (filters.minPrice) query.price.$gte = parseFloat(filters.minPrice);

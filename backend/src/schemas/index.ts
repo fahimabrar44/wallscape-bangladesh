@@ -27,6 +27,7 @@ export const productSchema = z.object({
   pattern: z.string().optional(),
   rollSize: z.string().optional(),
   coverageArea: z.string().optional(),
+  room: z.string().optional(),
   price: z.number().min(0),
   discountPrice: z.number().min(0).optional(),
   stock: z.number().min(0),

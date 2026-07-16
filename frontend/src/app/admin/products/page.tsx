@@ -79,6 +79,7 @@ export default function AdminProducts() {
                 <th className="text-left py-3 px-4 font-medium text-muted">Product</th>
                 <th className="text-left py-3 px-4 font-medium text-muted">Code</th>
                 <th className="text-left py-3 px-4 font-medium text-muted">Category</th>
+                <th className="text-left py-3 px-4 font-medium text-muted">Details</th>
                 <th className="text-left py-3 px-4 font-medium text-muted">Price</th>
                 <th className="text-left py-3 px-4 font-medium text-muted">Stock</th>
                 <th className="text-left py-3 px-4 font-medium text-muted">Status</th>
@@ -89,7 +90,7 @@ export default function AdminProducts() {
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="border-b border-border last:border-0">
-                    {Array.from({ length: 7 }).map((_, j) => (
+                    {Array.from({ length: 8 }).map((_, j) => (
                       <td key={j} className="py-3 px-4">
                         <div className="h-4 bg-gray-200 rounded animate-pulse" style={{ width: j === 0 ? '160px' : '80px' }} />
                       </td>
@@ -98,7 +99,7 @@ export default function AdminProducts() {
                 ))
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center">
+                  <td colSpan={8} className="py-12 text-center">
                     <Package size={40} className="mx-auto text-muted mb-3" />
                     <p className="text-muted font-medium">No products found</p>
                     <p className="text-xs text-muted mt-1">Try adjusting your search</p>
@@ -126,6 +127,14 @@ export default function AdminProducts() {
                     <td className="py-3 px-4 text-muted">{product.productCode}</td>
                     <td className="py-3 px-4 text-muted">
                       {typeof product.category === 'object' ? product.category.name : product.category}
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex flex-wrap gap-1">
+                        {product.material && <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-primary/5 text-primary">{product.material}</span>}
+                        {product.color && <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-primary/5 text-primary-light">{product.color}</span>}
+                        {product.pattern && <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-600">{product.pattern}</span>}
+                        {!product.material && !product.color && !product.pattern && <span className="text-xs text-muted">—</span>}
+                      </div>
                     </td>
                     <td className="py-3 px-4 font-medium">{formatCurrency(product.price)}</td>
                     <td className="py-3 px-4">

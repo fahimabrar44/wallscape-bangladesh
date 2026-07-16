@@ -10,6 +10,7 @@ export interface Product {
   pattern?: string;
   rollSize?: string;
   coverageArea?: string;
+  room?: string;
   price: number;
   discountPrice?: number;
   stock: number;

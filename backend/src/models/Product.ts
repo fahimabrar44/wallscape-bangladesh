@@ -11,6 +11,7 @@ export interface IProduct extends Document {
   pattern?: string;
   rollSize?: string;
   coverageArea?: string;
+  room?: string;
   price: number;
   discountPrice?: number;
   stock: number;
@@ -44,6 +45,7 @@ const productSchema = new Schema<IProduct>(
     pattern: { type: String, trim: true },
     rollSize: { type: String, trim: true },
     coverageArea: { type: String, trim: true },
+    room: { type: String, trim: true },
     price: { type: Number, required: true, min: 0 },
     discountPrice: { type: Number, min: 0 },
     stock: { type: Number, required: true, default: 0, min: 0 },
