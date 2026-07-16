@@ -5,9 +5,10 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useRouter, useParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { Category, Product } from '@/types';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Upload } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import CloudinaryUpload from '@/components/ui/CloudinaryUpload';
 
 export default function EditProductPage() {
   const router = useRouter();
@@ -219,20 +220,30 @@ export default function EditProductPage() {
 
         {/* Images */}
         <div>
-          <label className="block text-sm font-medium mb-1">Images (URLs)</label>
-          <div className="space-y-2">
+          <label className="block text-sm font-medium mb-2">Images</label>
+          <div className="flex flex-wrap gap-3">
             {form.images.map((img, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="flex items-center gap-2 p-2 border border-border rounded-lg">
+                <CloudinaryUpload
+                  currentImage={img}
+                  onUpload={(url) => updateImage(i, url)}
+                  onRemove={() => removeImage(i)}
+                />
                 <input type="text" value={img} onChange={(e) => updateImage(i, e.target.value)}
-                  placeholder={`Image URL ${i + 1}`}
-                  className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
-                <button type="button" onClick={() => removeImage(i)}
-                  className="px-2 py-1 text-red-500 hover:bg-red-50 rounded-lg text-sm">Remove</button>
+                  placeholder="Image URL"
+                  className="w-40 px-2 py-1.5 border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-primary/20" />
+                {form.images.length > 1 && (
+                  <button type="button" onClick={() => removeImage(i)}
+                    className="text-red-400 hover:text-red-600 text-xs px-1">✕</button>
+                )}
               </div>
             ))}
+            <button type="button" onClick={addImage}
+              className="w-24 h-24 rounded-lg border-2 border-dashed border-border hover:border-primary transition flex flex-col items-center justify-center gap-1 text-muted hover:text-primary text-xs">
+              <Upload size={20} />
+              Add
+            </button>
           </div>
-          <button type="button" onClick={addImage}
-            className="mt-2 text-sm text-primary hover:underline">+ Add image</button>
         </div>
 
         {/* Tags */}
