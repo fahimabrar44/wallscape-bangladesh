@@ -62,7 +62,7 @@ export const orderSchema = z.object({
     productId: z.string(),
     name: z.string(),
     productCode: z.string(),
-    image: z.string(),
+    image: z.string().optional().default(''),
     price: z.number(),
     quantity: z.number().min(1),
   })).min(1),
