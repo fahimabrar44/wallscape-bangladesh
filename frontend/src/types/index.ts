@@ -67,6 +67,8 @@ export interface Order {
   };
   orderStatus: OrderStatus;
   isPaid: boolean;
+  paidAt?: string;
+  deliveredAt?: string;
   createdAt: string;
 }
 
@@ -101,6 +103,12 @@ export interface Review {
   review: string;
   isApproved: boolean;
   createdAt: string;
+  tags?: string[];
+  date?: string;
+  name?: string;
+  text?: string;
+  location?: string;
+  initials?: string;
 }
 
 export interface Blog {

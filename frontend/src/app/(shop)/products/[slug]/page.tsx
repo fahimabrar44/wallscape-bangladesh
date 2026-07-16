@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, use } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 import { formatCurrency, getImageUrl } from '@/lib/utils'
 import { useCart } from '@/providers/cart-provider'
-import { Product, Review } from '@/types'
+import { Product, Review, Category } from '@/types'
 import {
   ShoppingCart,
   Zap,
@@ -18,32 +18,33 @@ import {
 } from 'lucide-react'
 
 interface ProductPageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
+  const { slug } = use(params)
   const { addItem } = useCart()
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 })
 
   const { data: productData, isLoading: productLoading } = useQuery({
-    queryKey: ['product', params.slug],
-    queryFn: () => api.get(`/api/products/${params.slug}`),
+    queryKey: ['product', slug],
+    queryFn: () => api.get<{ product: Product }>(`/api/products/${slug}`),
   })
 
   const product: Product | undefined = productData?.product
 
   const { data: relatedData } = useQuery({
-    queryKey: ['related-products', product?.id],
-    queryFn: () => api.get(`/api/products/${product!.id}/related`),
-    enabled: !!product?.id,
+    queryKey: ['related-products', product?._id],
+    queryFn: () => api.get<{ products: Product[] }>(`/api/products/${product!._id}/related`),
+    enabled: !!product?._id,
   })
 
   const { data: reviewsData } = useQuery({
-    queryKey: ['reviews', product?.id],
-    queryFn: () => api.get(`/api/reviews?product=${product!.id}&isApproved=true`),
-    enabled: !!product?.id,
+    queryKey: ['reviews', product?._id],
+    queryFn: () => api.get<{ reviews: Review[] }>(`/api/reviews?product=${product!._id}&isApproved=true`),
+    enabled: !!product?._id,
   })
 
   if (productLoading) {
@@ -71,7 +72,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const isDiscounted = product.discountPrice && product.discountPrice < product.price
   const displayPrice = isDiscounted ? product.discountPrice! : product.price
-  const images = product.images?.length ? product.images : [product.image].filter(Boolean)
+  const images = product.images?.length ? product.images : product.images
   const relatedProducts: Product[] = relatedData?.products ?? []
   const reviews: Review[] = reviewsData?.reviews ?? []
   const averageRating =
@@ -88,7 +89,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const specs = [
     { label: 'Product Code', value: product.productCode },
-    { label: 'Category', value: product.category },
+    { label: 'Category', value: typeof product.category === 'string' ? product.category : (product.category as Category)?.name },
     { label: 'Brand', value: product.brand },
     { label: 'Material', value: product.material },
     { label: 'Color', value: product.color },
@@ -197,7 +198,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            {product.inStock ? (
+            {product.stock > 0 ? (
               <>
                 <CheckCircle className="h-5 w-5 text-green-600" />
                 <span className="font-medium text-green-700">In Stock</span>
@@ -210,20 +211,12 @@ export default function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
 
-          {product.installationAvailable && (
-            <div className="card-modern flex items-center gap-3 px-4 py-3">
-              <CheckCircle className="h-5 w-5 shrink-0 text-primary" />
-              <span className="text-sm">
-                Professional installation service available for this product
-              </span>
-            </div>
-          )}
 
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center rounded-xl border border-border bg-white">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                disabled={!product.inStock}
+                disabled={product.stock <= 0}
                 className="flex h-12 w-12 items-center justify-center text-lg font-medium hover:bg-gray-50 disabled:opacity-30 rounded-l-xl transition-colors"
               >
                 -
@@ -233,7 +226,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               </span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                disabled={!product.inStock}
+                disabled={product.stock <= 0}
                 className="flex h-12 w-12 items-center justify-center text-lg font-medium hover:bg-gray-50 disabled:opacity-30 rounded-r-xl transition-colors"
               >
                 +
@@ -241,8 +234,8 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
 
             <button
-              onClick={() => addItem({ product, quantity })}
-              disabled={!product.inStock}
+              onClick={() => addItem(product, quantity)}
+              disabled={product.stock <= 0}
               className="btn-primary flex flex-1 items-center justify-center gap-2 min-w-[160px]"
             >
               <ShoppingCart className="h-5 w-5" />
@@ -250,8 +243,8 @@ export default function ProductPage({ params }: ProductPageProps) {
             </button>
 
             <button
-              onClick={() => addItem({ product, quantity })}
-              disabled={!product.inStock}
+              onClick={() => addItem(product, quantity)}
+              disabled={product.stock <= 0}
               className="btn-secondary flex items-center justify-center gap-2"
             >
               <Zap className="h-5 w-5" />
@@ -303,13 +296,13 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {relatedProducts.map((rp) => (
               <Link
-                key={rp.id}
+                key={rp._id}
                 href={`/products/${rp.slug}`}
                 className="group card-premium p-3 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="relative mb-3 aspect-[4/5] overflow-hidden rounded-xl bg-gray-100">
                   <Image
-                    src={getImageUrl(rp.image)}
+                    src={getImageUrl(rp.images?.[0])}
                     alt={rp.name}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
@@ -355,7 +348,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div className="grid gap-4 sm:grid-cols-2">
             {reviews.map((review) => (
               <div
-                key={review.id}
+                key={review._id}
                 className="card-modern p-5"
               >
                 <div className="mb-2 flex items-center gap-3">
@@ -371,10 +364,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-medium">{review.author}</span>
-                  <span className="text-xs text-muted">{review.date}</span>
+                  <span className="text-sm font-medium">{review.customerName}</span>
+                  <span className="text-xs text-muted">{review.createdAt}</span>
                 </div>
-                <p className="text-muted leading-relaxed">{review.comment}</p>
+                <p className="text-muted leading-relaxed">{review.review}</p>
               </div>
             ))}
           </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,10 +9,11 @@ import { getImageUrl, formatDate } from '@/lib/utils';
 import { Blog } from '@/types';
 import { Calendar, User, ArrowLeft } from 'lucide-react';
 
-export default function BlogDetailPage({ params }: { params: { slug: string } }) {
+export default function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const { data, isLoading } = useQuery({
-    queryKey: ['blog', params.slug],
-    queryFn: () => api.get<{ blog: Blog }>(`/api/blogs/${params.slug}`),
+    queryKey: ['blog', slug],
+    queryFn: () => api.get<{ blog: Blog }>(`/api/blogs/${slug}`),
   });
 
   const blog = data?.blog;

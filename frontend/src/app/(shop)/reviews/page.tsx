@@ -67,19 +67,21 @@ export default function ReviewsPage() {
     tags: [],
   }));
 
-  const all = [...apiReviews, ...staticReviews];
+  const all: any[] = [...apiReviews, ...staticReviews];
 
   const filtered = all
-    .filter((r) => !filterTag || r.tags.includes(filterTag))
-    .sort((a, b) => {
-      if (sortBy === 'newest') return new Date(b.date).getTime() - new Date(a.date).getTime();
-      if (sortBy === 'oldest') return new Date(a.date).getTime() - new Date(b.date).getTime();
+    .filter((r: any) => !filterTag || (r.tags || []).includes(filterTag))
+    .sort((a: any, b: any) => {
+      const aDate = a.createdAt || a.date || '';
+      const bDate = b.createdAt || b.date || '';
+      if (sortBy === 'newest') return new Date(bDate).getTime() - new Date(aDate).getTime();
+      if (sortBy === 'oldest') return new Date(aDate).getTime() - new Date(bDate).getTime();
       if (sortBy === 'highest') return b.rating - a.rating;
       if (sortBy === 'lowest') return a.rating - b.rating;
       return 0;
     });
 
-  const avgRating = (all.reduce((sum, r) => sum + r.rating, 0) / all.length).toFixed(1);
+  const avgRating = (all.reduce((sum: number, r: any) => sum + r.rating, 0) / all.length).toFixed(1);
   const totalReviews = all.length;
   const fiveStar = all.filter((r) => r.rating === 5).length;
   const fourStar = all.filter((r) => r.rating === 4).length;
@@ -211,7 +213,7 @@ export default function ReviewsPage() {
                 </div>
                 {r.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border/50">
-                    {r.tags.map((tag) => (
+                    {r.tags.map((tag: string) => (
                       <button
                         key={tag}
                         onClick={() => setFilterTag(tag)}

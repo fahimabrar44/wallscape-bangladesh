@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
+export const dynamic = 'force-dynamic';
+
+import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, Package, ArrowLeft, ShoppingBag, MapPin, Phone, Mail } from 'lucide-react';
 import { useCart } from '@/providers/cart-provider';
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get('orderNumber');
   const { clearCart } = useCart();
@@ -73,5 +75,13 @@ export default function OrderSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div className="container-custom py-24 text-center"><div className="animate-pulse h-8 w-48 bg-gray-200 rounded mx-auto" /></div>}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }

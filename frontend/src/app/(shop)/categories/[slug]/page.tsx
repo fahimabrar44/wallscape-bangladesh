@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,13 +16,14 @@ const sortOptions = [
   { value: 'price-desc', label: 'Price: High to Low' },
 ];
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
+export default function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const slug = use(params).slug;
   const [sort, setSort] = useState('newest');
   const [page, setPage] = useState(1);
 
   const { data: catData, isLoading: catLoading } = useQuery({
-    queryKey: ['category', params.slug],
-    queryFn: () => api.get<{ category: Category }>(`/api/categories/${params.slug}`),
+    queryKey: ['category', slug],
+    queryFn: () => api.get<{ category: Category }>(`/api/categories/${slug}`),
   });
   const category = catData?.category;
 
@@ -33,7 +34,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   queryParams.set('limit', '20');
 
   const { data: productsData, isLoading: prodLoading } = useQuery({
-    queryKey: ['category-products', params.slug, sort, page],
+    queryKey: ['category-products', slug, sort, page],
     queryFn: () => api.get<{ products: Product[]; pagination: Pagination }>(`/api/products?${queryParams}`),
     enabled: !!category,
   });

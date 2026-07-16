@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -18,7 +18,7 @@ const sortOptions = [
   { value: 'name', label: 'Name' },
 ];
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const [filters, setFilters] = useState({
     category: searchParams.get('category') || '',
@@ -219,5 +219,13 @@ function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
     </Link>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="container-custom py-12"><div className="animate-pulse h-8 w-48 bg-gray-200 rounded mb-8" /><div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">{[...Array(8)].map((_, i) => <div key={i} className="aspect-[4/5] bg-gray-100 rounded-xl" />)}</div></div>}>
+      <ProductsContent />
+    </Suspense>
   );
 }
