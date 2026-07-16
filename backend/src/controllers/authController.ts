@@ -99,3 +99,19 @@ export async function deleteAdmin(request: FastifyRequest, reply: FastifyReply) 
   await Admin.findByIdAndDelete(id);
   reply.send({ message: 'Admin deleted successfully' });
 }
+
+export async function setup(request: FastifyRequest, reply: FastifyReply) {
+  const count = await Admin.countDocuments();
+  if (count > 0) {
+    reply.status(400).send({ message: 'Setup already completed' });
+    return;
+  }
+  const admin = await Admin.create({
+    name: 'Super Admin',
+    email: 'admin@wallscapebd.com',
+    password: 'admin123',
+    role: 'super_admin',
+    isActive: true,
+  });
+  reply.send({ message: 'Default admin created', email: admin.email });
+}

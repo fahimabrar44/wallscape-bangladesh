@@ -47,6 +47,9 @@ import * as upload from '../controllers/uploadController';
 import * as contact from '../controllers/contactController';
 
 export async function registerRoutes(app: FastifyInstance) {
+  // Setup route — creates default admin if none exists (one-time use)
+  app.post('/api/setup', auth.setup);
+
   // Health check
   app.get('/api/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }));
 
