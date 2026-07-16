@@ -5,8 +5,8 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
   LayoutDashboard, Package, Grid3X3, ShoppingCart, Users, Star, FileText,
-  FolderOpen, Image, ImagePlus, Settings, Shield, BarChart3, LogOut,
-  Menu, X, ChevronDown, Bell, ChevronLeft, Home
+  FolderOpen, Image, Settings, Shield, BarChart3, LogOut,
+  Menu, X, Home
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -20,8 +20,6 @@ const navItems = [
   { icon: FileText, label: 'Blogs', href: '/admin/blogs' },
   { icon: FolderOpen, label: 'Projects', href: '/admin/projects' },
   { icon: Image, label: 'Gallery', href: '/admin/gallery' },
-  { icon: ImagePlus, label: 'Banners', href: '/admin/banners' },
-  { icon: FileText, label: 'Pages', href: '/admin/pages' },
   { icon: Settings, label: 'Settings', href: '/admin/settings' },
   { icon: Shield, label: 'Admin Users', href: '/admin/users' },
   { icon: BarChart3, label: 'Reports', href: '/admin/reports' },
