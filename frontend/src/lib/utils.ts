@@ -25,7 +25,7 @@ export function truncate(str: string, length: number): string {
 export function getImageUrl(path: string): string {
   if (!path) return '/images/placeholder.svg';
   if (path.startsWith('http')) return path;
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://wallscapebd.onrender.com';
   return `${API_BASE}${path}`;
 }
 
