@@ -8,13 +8,13 @@ import { Toaster } from 'react-hot-toast';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
-  variable: '--font-heading',
+  variable: '--font-heading-app',
   display: 'swap',
 });
 
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-sans',
+  variable: '--font-sans-app',
   display: 'swap',
 });
 
