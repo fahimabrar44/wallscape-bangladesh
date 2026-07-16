@@ -19,7 +19,7 @@ export default function AdminProducts() {
     queryKey: ['admin-products', search, page],
     queryFn: () =>
       api.get<{ products: Product[]; pagination: Pagination }>(
-        `/api/products?page=${page}&limit=10&search=${search}&isActive=`
+        `/api/products?page=${page}&limit=10&search=${search}`
       ),
   });
 

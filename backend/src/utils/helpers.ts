@@ -45,7 +45,7 @@ export function buildFilters(filters: Record<string, any>) {
       { productCode: { $regex: filters.search, $options: 'i' } },
     ];
   }
-  if (filters.isActive !== undefined) query.isActive = filters.isActive === 'true';
+  if (filters.isActive) query.isActive = filters.isActive === 'true';
   return query;
 }
 
