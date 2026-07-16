@@ -2,15 +2,18 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
 import { api } from '@/lib/api';
+import { getImageUrl } from '@/lib/utils';
 import { Category } from '@/types';
-import { Plus, Edit2, Trash2, Tag } from 'lucide-react';
+import { Plus, Edit2, Trash2, Tag, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
+import CloudinaryUpload from '@/components/ui/CloudinaryUpload';
 
 export default function AdminCategoriesPage() {
   const [editing, setEditing] = useState<Category | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ name: '', description: '', order: 0 });
+  const [form, setForm] = useState({ name: '', description: '', image: '', order: 0 });
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -45,22 +48,23 @@ export default function AdminCategoriesPage() {
 
   const categories = data?.categories || [];
 
-  function closeModal() { setShowModal(false); setEditing(null); setForm({ name: '', description: '', order: 0 }); }
+  function closeModal() { setShowModal(false); setEditing(null); setForm({ name: '', description: '', image: '', order: 0 }); }
 
-  function openEdit(cat: Category) { setEditing(cat); setForm({ name: cat.name, description: cat.description || '', order: cat.order || 0 }); setShowModal(true); }
+  function openEdit(cat: Category) { setEditing(cat); setForm({ name: cat.name, description: cat.description || '', image: cat.image || '', order: cat.order || 0 }); setShowModal(true); }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim()) return toast.error('Name is required');
-    if (editing) updateMutation.mutate({ id: editing._id, data: form });
-    else createMutation.mutate(form);
+    const data = { ...form, image: form.image || undefined };
+    if (editing) updateMutation.mutate({ id: editing._id, data });
+    else createMutation.mutate(data);
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Categories</h1>
-        <button onClick={() => { setEditing(null); setForm({ name: '', description: '', order: 0 }); setShowModal(true); }} className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition">
+        <button onClick={() => { setEditing(null); setForm({ name: '', description: '', image: '', order: 0 }); setShowModal(true); }} className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition">
           <Plus size={16} /> Add Category
         </button>
       </div>
@@ -68,6 +72,7 @@ export default function AdminCategoriesPage() {
       <div className="bg-white rounded-xl border border-border overflow-hidden"><div className="overflow-x-auto"><table className="w-full text-sm">
           <thead>
             <tr className="bg-gray-50 border-b border-border">
+              <th className="text-left px-4 py-3 font-medium text-muted">Image</th>
               <th className="text-left px-4 py-3 font-medium text-muted">Name</th>
               <th className="text-left px-4 py-3 font-medium text-muted">Slug</th>
               <th className="text-left px-4 py-3 font-medium text-muted">Order</th>
@@ -79,6 +84,7 @@ export default function AdminCategoriesPage() {
             {isLoading ? (
               Array.from({ length: 8 }).map((_, i) => (
                 <tr key={i} className="border-b border-border animate-pulse">
+                  <td className="px-4 py-3"><div className="h-8 w-8 bg-gray-200 rounded" /></td>
                   <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-32" /></td>
                   <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-24" /></td>
                   <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-12" /></td>
@@ -87,11 +93,20 @@ export default function AdminCategoriesPage() {
                 </tr>
               ))
             ) : categories.length === 0 ? (
-              <tr><td colSpan={5} className="text-center py-12"><Tag size={40} className="mx-auto text-muted mb-3" /><p className="text-muted font-medium">No categories found</p><p className="text-xs text-muted mt-1">Add your first category to get started</p></td></tr>
+              <tr><td colSpan={6} className="text-center py-12"><Tag size={40} className="mx-auto text-muted mb-3" /><p className="text-muted font-medium">No categories found</p><p className="text-xs text-muted mt-1">Add your first category to get started</p></td></tr>
             ) : categories.map((cat) => (
               <tr key={cat._id} className="border-b border-border hover:bg-gray-50 transition">
+                <td className="px-4 py-3">
+                  <div className="w-9 h-9 rounded-lg bg-gray-100 overflow-hidden relative">
+                    {cat.image ? (
+                      <Image src={getImageUrl(cat.image)} alt={cat.name} fill className="object-cover" sizes="36px" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted"><Tag size={14} /></div>
+                    )}
+                  </div>
+                </td>
                 <td className="px-4 py-3 font-medium">{cat.name}</td>
-                <td className="px-4 py-3 text-muted">{cat.slug}</td>
+                <td className="px-4 py-3 text-muted font-mono text-xs">{cat.slug}</td>
                 <td className="px-4 py-3">{cat.order}</td>
                 <td className="px-4 py-3">
                   <span className={`text-xs px-2 py-1 rounded-full ${cat.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -125,6 +140,19 @@ export default function AdminCategoriesPage() {
                 <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
+                <label className="block text-sm font-medium mb-1">Image</label>
+                <div className="flex items-start gap-3">
+                  <CloudinaryUpload
+                    currentImage={form.image}
+                    onUpload={(url) => setForm({ ...form, image: url })}
+                    onRemove={() => setForm({ ...form, image: '' })}
+                  />
+                  <input type="text" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })}
+                    placeholder="Image URL"
+                    className="flex-1 px-3 py-2 border border-border rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                </div>
+              </div>
+              <div>
                 <label className="block text-sm font-medium mb-1">Order</label>
                 <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
@@ -142,4 +170,3 @@ export default function AdminCategoriesPage() {
   </div>
   );
 }
-
