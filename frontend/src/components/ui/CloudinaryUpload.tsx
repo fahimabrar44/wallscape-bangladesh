@@ -22,7 +22,7 @@ export default function CloudinaryUpload({ onUpload, onRemove, currentImage }: C
     setUploading(true);
 
     try {
-      const { signature, timestamp, cloudName, apiKey, folder } = await api.post<any>('/api/upload/signature');
+      const { signature, timestamp, cloudName, apiKey, folder } = await api.get<{ signature: string; timestamp: number; cloudName: string; apiKey: string; folder: string }>('/api/upload/signature');
 
       const formData = new FormData();
       formData.append('file', file);

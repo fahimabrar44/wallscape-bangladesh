@@ -104,7 +104,7 @@ export async function registerRoutes(app: FastifyInstance) {
   app.post('/api/contact', contact.submitContactForm);
 
   // Image upload (public for now)
-  app.post('/api/upload/signature', upload.getUploadSignature);
+  app.get('/api/upload/signature', upload.getUploadSignature);
   app.post('/api/upload', upload.uploadImage);
   app.post('/api/upload/multiple', upload.uploadMultipleImages);
   app.delete('/api/upload/:publicId', upload.deleteImage);
