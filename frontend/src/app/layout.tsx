@@ -1,9 +1,22 @@
 import type { Metadata } from 'next';
+import { Playfair_Display, Inter } from 'next/font/google';
 import '@/styles/globals.css';
 import { QueryProvider } from '@/providers/query-provider';
 import { CartProvider } from '@/providers/cart-provider';
 import LayoutClient from '@/components/layout/LayoutClient';
 import { Toaster } from 'react-hot-toast';
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-heading',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -39,7 +52,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">
+      <body className={`min-h-screen flex flex-col ${playfair.variable} ${inter.variable}`}>
         <QueryProvider>
           <CartProvider>
             <LayoutClient>{children}</LayoutClient>

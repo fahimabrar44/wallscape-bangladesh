@@ -130,10 +130,10 @@ export default function ReviewsPage() {
               {[5, 4, 3].map((star) => (
                 <div key={star} className="flex items-center gap-2 text-sm">
                   <span className="text-muted">{star}</span>
-                  <Star size={12} className="text-gold fill-gold" />
+                  <Star size={12} className="text-primary-light fill-primary-light" />
                   <div className="w-20 sm:w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-gold to-gold-light rounded-full"
+                      className="h-full bg-gradient-to-r from-primary-light to-primary-light rounded-full"
                       style={{ width: `${(star === 5 ? fiveStar : star === 4 ? fourStar : threeStar) / totalReviews * 100}%` }}
                     />
                   </div>
@@ -265,7 +265,7 @@ export default function ReviewsPage() {
                 <div className="flex gap-1.5">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <button key={s} type="button" onClick={() => setForm({ ...form, rating: s })} className="p-1 transition hover:scale-110">
-                      <svg width={28} height={28} viewBox="0 0 24 24" className={s <= form.rating ? 'text-gold fill-gold' : 'text-gray-200 fill-gray-200'}>
+                      <svg width={28} height={28} viewBox="0 0 24 24" className={s <= form.rating ? 'text-primary-light fill-primary-light' : 'text-gray-200 fill-gray-200'}>
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                       </svg>
                     </button>

@@ -124,7 +124,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
                 <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
                   <Image src={getImageUrl(product.images?.[0] || '')} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
                   {product.discountPrice && (
-                    <span className="badge-gold absolute top-2 left-2">
+                    <span className="badge-accent absolute top-2 left-2">
                       -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
                     </span>
                   )}

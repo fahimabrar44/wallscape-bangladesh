@@ -79,7 +79,7 @@ export default function AdminReviewsPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-0.5">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} size={14} className={i < review.rating ? 'text-gold fill-gold' : 'text-gray-300'} />
+                        <Star key={i} size={14} className={i < review.rating ? 'text-primary-light fill-primary-light' : 'text-gray-300'} />
                       ))}
                     </div>
                   </td>
@@ -123,7 +123,7 @@ export default function AdminReviewsPage() {
                 <div className="flex items-center gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button key={star} type="button" onClick={() => setForm({ ...form, rating: star })} className="p-1">
-                      <Star size={20} className={star <= form.rating ? 'text-gold fill-gold' : 'text-gray-300'} />
+                      <Star size={20} className={star <= form.rating ? 'text-primary-light fill-primary-light' : 'text-gray-300'} />
                     </button>
                   ))}
                 </div>

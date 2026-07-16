@@ -39,7 +39,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-transparent to-primary-light/5 rounded-2xl border border-border p-8 lg:p-12 mb-16">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-gold/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-light/5 rounded-full translate-y-1/2 -translate-x-1/2" />
         <div className="relative max-w-2xl">
           <h1 className="text-gradient text-3xl lg:text-4xl font-bold mb-4">
             We Bring Walls to Life
@@ -139,8 +139,8 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="card-modern p-6 lg:p-8">
-            <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-4">
-              <Eye size={24} className="text-gold" />
+            <div className="w-12 h-12 bg-primary-light/10 rounded-lg flex items-center justify-center mb-4">
+              <Eye size={24} className="text-primary-light" />
             </div>
             <h3 className="text-lg font-bold mb-3">Our Vision</h3>
             <p className="text-muted text-sm leading-relaxed">
