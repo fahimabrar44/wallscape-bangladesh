@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Project } from '@/types';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import CloudinaryUpload from '@/components/ui/CloudinaryUpload';
 
 export default function AdminProjectsPage() {
   const [editing, setEditing] = useState<Project | null>(null);
@@ -106,8 +107,21 @@ export default function AdminProjectsPage() {
                 <input type="text" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Images (comma separated URLs)</label>
-                <input type="text" value={form.images} onChange={(e) => setForm({ ...form, images: e.target.value })} placeholder="https://..., https://..." className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                <label className="block text-sm font-medium mb-1">Images</label>
+                <div className="flex items-center gap-2 mb-2">
+                  <CloudinaryUpload onUpload={(url) => setForm({ ...form, images: form.images ? form.images + ', ' + url : url })} />
+                </div>
+                {form.images && (
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {form.images.split(',').map(s => s.trim()).filter(Boolean).map((img, i) => (
+                      <div key={i} className="relative group w-16 h-16 rounded-lg overflow-hidden border border-border">
+                        <img src={img} alt="" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                        <button type="button" onClick={() => { const arr = form.images.split(',').map(s => s.trim()).filter(Boolean); arr.splice(i, 1); setForm({ ...form, images: arr.join(', ') }); }} className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition"><X size={12} /></button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <input type="text" value={form.images} onChange={(e) => setForm({ ...form, images: e.target.value })} placeholder="Image URLs (comma separated)" className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>

@@ -7,6 +7,7 @@ import { Blog } from '@/types';
 import { Plus, Edit2, Trash2, Search } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import CloudinaryUpload from '@/components/ui/CloudinaryUpload';
 
 export default function AdminBlogsPage() {
   const [page, setPage] = useState(1);
@@ -122,8 +123,11 @@ export default function AdminBlogsPage() {
                   <input type="text" value={form.author} onChange={(e) => setForm({ ...form, author: e.target.value })} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Image URL</label>
-                  <input type="text" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                  <label className="block text-sm font-medium mb-1">Image</label>
+                  <div className="flex items-center gap-2">
+                    <CloudinaryUpload currentImage={form.image} onUpload={(url) => setForm({ ...form, image: url })} onRemove={() => setForm({ ...form, image: '' })} />
+                    <input type="text" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="Image URL" className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                  </div>
                 </div>
               </div>
               <div>

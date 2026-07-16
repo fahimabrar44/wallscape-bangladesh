@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import CloudinaryUpload from '@/components/ui/CloudinaryUpload';
 
 export default function AdminGalleryPage() {
   const [showModal, setShowModal] = useState(false);
@@ -74,16 +75,25 @@ export default function AdminGalleryPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Image URL</label>
-                <input type="text" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                <label className="block text-sm font-medium mb-1">Image</label>
+                <div className="flex items-center gap-2">
+                  <CloudinaryUpload currentImage={form.image} onUpload={(url) => setForm({ ...form, image: url })} onRemove={() => setForm({ ...form, image: '' })} />
+                  <input type="text" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="Image URL" className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Before Image</label>
-                <input type="text" value={form.beforeImage} onChange={(e) => setForm({ ...form, beforeImage: e.target.value })} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                <div className="flex items-center gap-2">
+                  <CloudinaryUpload currentImage={form.beforeImage} onUpload={(url) => setForm({ ...form, beforeImage: url })} onRemove={() => setForm({ ...form, beforeImage: '' })} />
+                  <input type="text" value={form.beforeImage} onChange={(e) => setForm({ ...form, beforeImage: e.target.value })} placeholder="Before image URL" className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">After Image</label>
-                <input type="text" value={form.afterImage} onChange={(e) => setForm({ ...form, afterImage: e.target.value })} className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                <div className="flex items-center gap-2">
+                  <CloudinaryUpload currentImage={form.afterImage} onUpload={(url) => setForm({ ...form, afterImage: url })} onRemove={() => setForm({ ...form, afterImage: '' })} />
+                  <input type="text" value={form.afterImage} onChange={(e) => setForm({ ...form, afterImage: e.target.value })} placeholder="After image URL" className="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+                </div>
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.isPublished} onChange={(e) => setForm({ ...form, isPublished: e.target.checked })} className="rounded border-border" />
