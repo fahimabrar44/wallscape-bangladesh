@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Admin } from '@/types';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Shield } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
@@ -79,16 +79,18 @@ export default function AdminUsersPage() {
               <tr key={i} className="border-b border-border animate-pulse">
                 {Array.from({ length: 6 }).map((_, j) => (<td key={j} className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-16" /></td>))}
               </tr>
-            )) : admins.map((a) => (
-              <tr key={a._id} className="border-b border-border hover:bg-gray-50">
+            )) : admins.length === 0 ? (
+              <tr><td colSpan={6} className="text-center py-12"><Shield size={40} className="mx-auto text-muted mb-3" /><p className="text-muted font-medium">No admin users found</p><p className="text-xs text-muted mt-1">Add your first admin user</p></td></tr>
+            ) : admins.map((a) => (
+              <tr key={a._id} className="border-b border-border hover:bg-gray-50 transition">
                 <td className="px-4 py-3 font-medium">{a.name}</td>
                 <td className="px-4 py-3">{a.email}</td>
                 <td className="px-4 py-3"><span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full font-medium capitalize">{a.role.replace('_', ' ')}</span></td>
                 <td className="px-4 py-3"><span className={`text-xs px-2 py-1 rounded-full ${a.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{a.isActive ? 'Active' : 'Inactive'}</span></td>
                 <td className="px-4 py-3 text-muted text-xs">{a.lastLogin ? formatDate(a.lastLogin) : 'Never'}</td>
                 <td className="px-4 py-3"><div className="flex gap-1">
-                  <button onClick={() => openEdit(a)} className="p-1.5 hover:bg-gray-100 rounded-lg"><Edit2 size={14} /></button>
-                  <button onClick={() => { if (confirm('Delete this admin?')) deleteMutation.mutate(a._id); }} className="p-1.5 hover:bg-red-50 text-red-500 rounded-lg"><Trash2 size={14} /></button>
+                  <button onClick={() => openEdit(a)} className="p-1.5 hover:bg-gray-100 rounded-lg transition"><Edit2 size={14} /></button>
+                  <button onClick={() => { if (confirm('Delete this admin?')) deleteMutation.mutate(a._id); }} className="p-1.5 hover:bg-red-50 text-red-500 rounded-lg transition"><Trash2 size={14} /></button>
                 </div></td>
               </tr>
             ))}

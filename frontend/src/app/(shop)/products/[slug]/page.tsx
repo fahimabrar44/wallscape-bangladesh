@@ -99,7 +99,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   ].filter((s) => s.value)
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="container-custom py-6 lg:py-10">
       <nav className="mb-8 flex items-center gap-2 text-sm text-muted">
         <Link href="/" className="hover:text-primary transition-colors">
           Home

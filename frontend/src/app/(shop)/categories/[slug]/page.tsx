@@ -96,12 +96,12 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       {(catLoading || prodLoading) ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-border overflow-hidden animate-pulse">
-              <div className="aspect-[3/4] bg-gray-200" />
+            <div key={i} className="card-modern animate-pulse overflow-hidden">
+              <div className="aspect-[3/4] skeleton" />
               <div className="p-4 space-y-2">
-                <div className="h-3 bg-gray-200 rounded w-1/3" />
-                <div className="h-4 bg-gray-200 rounded w-2/3" />
-                <div className="h-4 bg-gray-200 rounded w-1/2" />
+                <div className="h-3 skeleton rounded w-1/3" />
+                <div className="h-4 skeleton rounded w-2/3" />
+                <div className="h-4 skeleton rounded w-1/2" />
               </div>
             </div>
           ))}
@@ -120,11 +120,11 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
           {/* Product Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
             {products.map((product) => (
-              <Link key={product._id} href={`/products/${product.slug}`} className="group bg-white rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all">
+              <Link key={product._id} href={`/products/${product.slug}`} className="group card-premium overflow-hidden">
                 <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden">
                   <Image src={getImageUrl(product.images?.[0] || '')} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
                   {product.discountPrice && (
-                    <span className="absolute top-2 left-2 bg-gold text-white text-xs font-semibold px-2 py-1 rounded-md">
+                    <span className="badge-gold absolute top-2 left-2">
                       -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
                     </span>
                   )}
@@ -138,8 +138,8 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
                   <p className="text-[11px] text-muted mb-1">{product.productCode}</p>
                   <h3 className="font-medium text-sm lg:text-base line-clamp-2 group-hover:text-primary transition leading-snug">{product.name}</h3>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="font-bold text-primary">{formatCurrency(product.discountPrice || product.price)}</span>
-                    {product.discountPrice && <span className="text-xs text-muted line-through">{formatCurrency(product.price)}</span>}
+                    <span className="price-current">{formatCurrency(product.discountPrice || product.price)}</span>
+                    {product.discountPrice && <span className="price-original">{formatCurrency(product.price)}</span>}
                   </div>
                 </div>
               </Link>

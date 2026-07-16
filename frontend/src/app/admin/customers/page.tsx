@@ -31,7 +31,7 @@ export default function AdminCustomersPage() {
       <div className="bg-white rounded-xl border border-border p-4">
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-          <input type="text" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="Search by name, phone, or email..." className="w-full pl-9 pr-4 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+          <input type="text" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="Search by name, phone, or email..." className="w-full pl-9 pr-4 py-2.5 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition" />
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default function AdminCustomersPage() {
                 <tr><td colSpan={6} className="text-center py-12 text-muted">No customers found</td></tr>
               ) : (
                 customers.map((c) => (
-                  <tr key={c._id} className="border-b border-border hover:bg-gray-50">
+                  <tr key={c._id} className="border-b border-border hover:bg-gray-50 transition">
                     <td className="px-4 py-3 font-medium">{c.name}</td>
                     <td className="px-4 py-3">{c.phone}</td>
                     <td className="px-4 py-3 text-muted">{c.email || '-'}</td>

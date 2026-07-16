@@ -38,7 +38,7 @@ export default function HomePage() {
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-8 sm:mb-10 lg:mb-14">
               <div>
                 <span className="section-label">Featured</span>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-1.5 sm:mt-2 mb-2 sm:mb-3">Curated Picks</h2>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gradient mt-1.5 sm:mt-2 mb-2 sm:mb-3">Curated Picks</h2>
                 <p className="text-sm sm:text-base text-muted max-w-lg">Handpicked designs that define elegance and style for your interiors</p>
               </div>
               <Link href="/products?sort=featured" className="hidden lg:inline-flex items-center gap-1 text-primary font-medium hover:underline mt-4 lg:mt-0">
@@ -77,7 +77,7 @@ export default function HomePage() {
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-10 lg:mb-14">
               <div>
                 <span className="section-label">New</span>
-                <h2 className="text-3xl lg:text-4xl font-bold mt-2 mb-3">Just Landed</h2>
+                <h2 className="text-3xl lg:text-4xl font-bold text-gradient mt-2 mb-3">Just Landed</h2>
                 <p className="text-muted max-w-lg">Fresh designs and latest trends — be the first to explore</p>
               </div>
               <Link href="/products?sort=newest" className="hidden lg:inline-flex items-center gap-1 text-primary font-medium hover:underline mt-4 lg:mt-0">
@@ -103,7 +103,7 @@ export default function HomePage() {
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-10 lg:mb-14">
               <div>
                 <span className="section-label">Popular</span>
-                <h2 className="text-3xl lg:text-4xl font-bold mt-2 mb-3">Best Sellers</h2>
+                <h2 className="text-3xl lg:text-4xl font-bold text-gradient mt-2 mb-3">Best Sellers</h2>
                 <p className="text-muted max-w-lg">Most loved by our customers across Bangladesh</p>
               </div>
               <Link href="/products?sort=best-selling" className="hidden lg:inline-flex items-center gap-1 text-primary font-medium hover:underline mt-4 lg:mt-0">
@@ -120,7 +120,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-center mt-12">
-              <Link href="/products" className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-dark transition shadow-md hover:shadow-lg">
+              <Link href="/products" className="btn-primary inline-flex items-center gap-2 px-6 py-3">
                 Browse All Products <ArrowRight size={16} />
               </Link>
             </div>

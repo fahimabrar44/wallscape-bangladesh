@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Page } from '@/types';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AdminPagesPage() {
@@ -69,14 +69,16 @@ export default function AdminPagesPage() {
               <tr key={i} className="border-b border-border animate-pulse">
                 {Array.from({ length: 4 }).map((_, j) => (<td key={j} className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-20" /></td>))}
               </tr>
-            )) : pages.map((p) => (
-              <tr key={p._id} className="border-b border-border hover:bg-gray-50">
+            )) : pages.length === 0 ? (
+              <tr><td colSpan={4} className="text-center py-12"><FileText size={40} className="mx-auto text-muted mb-3" /><p className="text-muted font-medium">No pages found</p><p className="text-xs text-muted mt-1">Add your first static page</p></td></tr>
+            ) : pages.map((p) => (
+              <tr key={p._id} className="border-b border-border hover:bg-gray-50 transition">
                 <td className="px-4 py-3 font-medium">{p.title}</td>
                 <td className="px-4 py-3 text-muted">{p.slug}</td>
                 <td className="px-4 py-3"><span className={`text-xs px-2 py-1 rounded-full ${p.isPublished ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{p.isPublished ? 'Published' : 'Draft'}</span></td>
                 <td className="px-4 py-3"><div className="flex gap-1">
-                  <button onClick={() => openEdit(p)} className="p-1.5 hover:bg-gray-100 rounded-lg"><Edit2 size={14} /></button>
-                  <button onClick={() => { if (confirm('Delete this page?')) deleteMutation.mutate(p._id); }} className="p-1.5 hover:bg-red-50 text-red-500 rounded-lg"><Trash2 size={14} /></button>
+                  <button onClick={() => openEdit(p)} className="p-1.5 hover:bg-gray-100 rounded-lg transition"><Edit2 size={14} /></button>
+                  <button onClick={() => { if (confirm('Delete this page?')) deleteMutation.mutate(p._id); }} className="p-1.5 hover:bg-red-50 text-red-500 rounded-lg transition"><Trash2 size={14} /></button>
                 </div></td>
               </tr>
             ))}

@@ -6,12 +6,16 @@ import { formatCurrency } from '@/lib/utils';
 import { BarChart3, ShoppingCart, TrendingUp, Package } from 'lucide-react';
 
 export default function AdminReportsPage() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['admin-dashboard'],
     queryFn: () => api.get<any>('/api/admin/orders/dashboard'),
   });
 
   const stats = data?.stats;
+
+  if (isLoading) {
+    return <div className="space-y-6"><h1 className="text-2xl font-bold">Reports</h1><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">{Array.from({ length: 4 }).map((_, i) => (<div key={i} className="bg-white rounded-xl border border-border p-6 animate-pulse"><div className="h-4 bg-gray-200 rounded w-24 mb-3" /><div className="h-8 bg-gray-200 rounded w-16" /></div>))}</div></div>;
+  }
 
   return (
     <div className="space-y-6">

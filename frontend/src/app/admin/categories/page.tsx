@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Category } from '@/types';
-import { Plus, Edit2, Trash2, GripVertical } from 'lucide-react';
+import { Plus, Edit2, Trash2, Tag } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AdminCategoriesPage() {
@@ -86,6 +86,8 @@ export default function AdminCategoriesPage() {
                   <td className="px-4 py-3"><div className="h-4 bg-gray-200 rounded w-20" /></td>
                 </tr>
               ))
+            ) : categories.length === 0 ? (
+              <tr><td colSpan={5} className="text-center py-12"><Tag size={40} className="mx-auto text-muted mb-3" /><p className="text-muted font-medium">No categories found</p><p className="text-xs text-muted mt-1">Add your first category to get started</p></td></tr>
             ) : categories.map((cat) => (
               <tr key={cat._id} className="border-b border-border hover:bg-gray-50 transition">
                 <td className="px-4 py-3 font-medium">{cat.name}</td>

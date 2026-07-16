@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { api } from '@/lib/api';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { Order, Pagination } from '@/types';
-import { Search, Eye, Filter } from 'lucide-react';
+import { Search, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const statuses = ['all', 'pending', 'confirmed', 'processing', 'packed', 'shipped', 'delivered', 'cancelled'];
@@ -55,7 +55,7 @@ export default function AdminOrdersPage() {
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               placeholder="Search by order number, name, or phone..."
-              className="w-full pl-9 pr-4 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-full pl-9 pr-4 py-2.5 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
             />
           </div>
           <div className="flex gap-2 flex-wrap">

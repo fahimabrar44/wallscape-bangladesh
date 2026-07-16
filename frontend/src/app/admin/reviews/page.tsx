@@ -74,7 +74,7 @@ export default function AdminReviewsPage() {
               <tr><td colSpan={5} className="text-center py-12 text-muted">No reviews yet</td></tr>
             ) : (
               reviews.map((review) => (
-                <tr key={review._id} className="border-b border-border hover:bg-gray-50">
+                <tr key={review._id} className="border-b border-border hover:bg-gray-50 transition">
                   <td className="px-4 py-3 font-medium">{review.customerName}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-0.5">
@@ -91,7 +91,7 @@ export default function AdminReviewsPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1">
-                      <button onClick={() => openEdit(review)} className="p-1.5 hover:bg-gray-100 rounded-lg" title="Edit"><Edit2 size={14} /></button>
+                      <button onClick={() => openEdit(review)} className="p-1.5 hover:bg-gray-100 rounded-lg transition" title="Edit"><Edit2 size={14} /></button>
                       {!review.isApproved && (
                         <button onClick={() => approveMutation.mutate(review._id)} className="p-1.5 hover:bg-green-50 text-green-600 rounded-lg transition" title="Approve">
                           <CheckCircle size={14} />
