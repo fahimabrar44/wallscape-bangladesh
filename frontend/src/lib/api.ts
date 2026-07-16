@@ -5,16 +5,15 @@ async function fetchAPI<T>(endpoint: string, options: RequestInit = {}): Promise
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),
   };
 
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  if (options.body && !(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
   }
 
-  if (options.body instanceof FormData) {
-    delete headers['Content-Type'];
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   const res = await fetch(url, { ...options, headers });
