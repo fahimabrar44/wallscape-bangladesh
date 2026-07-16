@@ -93,39 +93,39 @@ export default function Header() {
     }`}>
       {/* Announcement bar */}
       {!announcementHidden && (
-        <div className="bg-gradient-to-r from-primary to-[#0f4a26] text-white text-xs sm:text-sm relative">
-          <div className="container-custom flex items-center justify-center py-2 sm:py-2.5 gap-2 sm:gap-4">
-            <span className="hidden sm:flex items-center gap-1"><Clock size={14} /> Mon-Sat: 9AM-8PM</span>
-            <span className="hidden sm:block text-white/30">|</span>
-            <span className="flex items-center gap-1"><MapPin size={14} /> Free Delivery on orders over ৳2,000</span>
-            <span className="hidden sm:block text-white/30">|</span>
-            <a href="tel:+8801700000000" className="hidden sm:flex items-center gap-1 hover:text-primary-light transition-colors font-medium"><Phone size={14} /> +880 1700-000000</a>
-            <button onClick={() => setAnnouncementHidden(true)} className="ml-2 sm:ml-4 p-0.5 hover:bg-white/10 rounded-full transition shrink-0" aria-label="Close announcement"><X size={14} /></button>
+        <div className="bg-gradient-to-r from-primary to-[#0f4a26] text-white text-[11px] sm:text-sm relative">
+          <div className="container-custom flex items-center justify-center py-1.5 sm:py-2.5 gap-1.5 sm:gap-4">
+            <span className="hidden sm:flex items-center gap-1"><Clock size={13} /> Mon-Sat: 9AM-8PM</span>
+            <span className="hidden sm:block text-white/20">|</span>
+            <span className="flex items-center gap-1 truncate max-w-[220px] sm:max-w-none"><MapPin size={13} /> Free Delivery on orders over ৳2,000</span>
+            <span className="hidden sm:block text-white/20">|</span>
+            <a href="tel:+8801700000000" className="hidden sm:flex items-center gap-1 hover:text-primary-light transition-colors font-medium"><Phone size={13} /> +880 1700-000000</a>
+            <button onClick={() => setAnnouncementHidden(true)} className="ml-1 sm:ml-4 p-0.5 hover:bg-white/10 rounded-full transition shrink-0" aria-label="Close announcement"><X size={13} /></button>
           </div>
         </div>
       )}
 
       {/* Main header */}
-      <div className={`transition-all duration-300 ${scrolled ? 'lg:h-16' : 'lg:h-20'}`}>
+      <div className={`transition-all duration-300 ${scrolled ? 'h-14 lg:h-16' : 'h-16 lg:h-20'}`}>
         <div className="container-custom h-full">
           <div className="flex items-center justify-between h-full">
             {/* Mobile: hamburger + logo */}
             <div className="flex items-center gap-2 lg:gap-0">
               <button
-                className={`lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100 transition ${mobileMenuOpen ? 'bg-gray-100' : ''}`}
+                className={`lg:hidden p-1.5 -ml-1.5 rounded-lg hover:bg-gray-100 transition ${mobileMenuOpen ? 'bg-gray-100' : ''}`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
-                {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
 
-              <Link href="/" className="flex items-center gap-2 shrink-0 group">
-                <div className={`bg-primary rounded-lg flex items-center justify-center transition-all duration-300 ${scrolled ? 'w-8 h-8' : 'w-10 h-10'}`}>
-                  <span className={`text-white font-bold transition-all duration-300 ${scrolled ? 'text-sm' : 'text-lg'}`}>WS</span>
+              <Link href="/" className="flex items-center gap-1.5 sm:gap-2 shrink-0 group">
+                <div className={`bg-primary rounded-lg flex items-center justify-center transition-all duration-300 ${scrolled ? 'w-7 h-7 sm:w-8 sm:h-8' : 'w-8 h-8 sm:w-10 sm:h-10'}`}>
+                  <span className={`text-white font-bold transition-all duration-300 ${scrolled ? 'text-xs sm:text-sm' : 'text-sm sm:text-lg'}`}>WS</span>
                 </div>
-                <div className="hidden sm:block">
-                  <h1 className={`font-bold leading-tight text-primary transition-all duration-300 ${scrolled ? 'text-base' : 'text-lg'}`}>WALLSCAPE</h1>
-                  <p className={`text-[10px] text-muted -mt-0.5 transition-all duration-300 ${scrolled ? 'opacity-60' : 'opacity-100'}`}>BANGLADESH</p>
+                <div>
+                  <h1 className={`font-bold leading-tight text-primary transition-all duration-300 truncate max-w-[100px] sm:max-w-none ${scrolled ? 'text-sm sm:text-base' : 'text-sm sm:text-lg'}`}>WALLSCAPE</h1>
+                  <p className={`text-[9px] sm:text-[10px] text-muted -mt-0.5 transition-all duration-300 ${scrolled ? 'opacity-60' : 'opacity-100'}`}>BANGLADESH</p>
                 </div>
               </Link>
             </div>
@@ -178,19 +178,19 @@ export default function Header() {
             </nav>
 
             {/* Right actions */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 sm:gap-1">
               <Link href="/track" className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-sm text-muted hover:text-primary hover:bg-gray-50 rounded-lg transition">
                 <Clock size={16} /> <span className="hidden xl:inline">Track Order</span>
               </Link>
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className={`p-2.5 rounded-lg transition ${searchOpen ? 'bg-gray-100 text-primary' : 'hover:bg-gray-100 text-gray-700'}`}
+                className={`p-2 sm:p-2.5 rounded-lg transition ${searchOpen ? 'bg-gray-100 text-primary' : 'hover:bg-gray-100 text-gray-700'}`}
                 aria-label="Toggle search"
               >
-                <Search size={19} />
+                <Search size={17} />
               </button>
-              <Link href="/cart" className="relative p-2.5 hover:bg-gray-100 rounded-lg transition group" aria-label="Shopping cart">
-                <ShoppingCart size={19} className="text-gray-700 group-hover:text-primary transition" />
+              <Link href="/cart" className="relative p-2 sm:p-2.5 hover:bg-gray-100 rounded-lg transition group" aria-label="Shopping cart">
+                <ShoppingCart size={17} className="text-gray-700 group-hover:text-primary transition" />
                 {itemCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-primary text-white text-[10px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full leading-none shadow-sm">
                     {itemCount > 99 ? '99+' : itemCount}
@@ -204,49 +204,53 @@ export default function Header() {
 
       {/* Search panel */}
       <div className={`overflow-hidden transition-all duration-300 ease-in-out ${searchOpen ? 'max-h-20 border-t border-border' : 'max-h-0'}`}>
-        <div className="container-custom py-3">
-          <form onSubmit={handleSearch} className="flex gap-2">
+        <div className="container-custom py-2.5 sm:py-3">
+          <form onSubmit={handleSearch} className="flex gap-1.5 sm:gap-2">
             <div className="relative flex-1">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="What are you looking for?" className="w-full pl-9 pr-4 py-2.5 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm bg-gray-50 focus:bg-white transition" autoFocus />
+              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search products..." className="w-full pl-9 pr-3 py-2 sm:py-2.5 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm bg-gray-50 focus:bg-white transition" autoFocus />
             </div>
-            <button type="submit" className="px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition text-sm font-medium whitespace-nowrap">Search</button>
-            <button type="button" onClick={() => { setSearchOpen(false); setSearchQuery(''); }} className="px-3 py-2.5 text-muted hover:text-dark transition"><X size={18} /></button>
+            <button type="submit" className="px-3 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition text-sm font-medium whitespace-nowrap">Search</button>
+            <button type="button" onClick={() => { setSearchOpen(false); setSearchQuery(''); }} className="px-2 sm:px-3 py-2 sm:py-2.5 text-muted hover:text-dark transition"><X size={16} /></button>
           </form>
         </div>
       </div>
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm animate-fadeIn" onClick={() => setMobileMenuOpen(false)} />
+        <div className="fixed inset-0 bg-black/40 z-40 lg:hidden animate-fadeIn" onClick={() => setMobileMenuOpen(false)} />
       )}
 
       {/* Mobile Navigation */}
       <div className={`lg:hidden fixed top-0 left-0 h-full w-[280px] sm:w-[320px] bg-white z-50 shadow-2xl transform transition-transform duration-300 ease-out ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center justify-between h-16 px-4 border-b border-border">
+        <div className="flex items-center justify-between h-14 sm:h-16 px-4 border-b border-border">
           <Link href="/" className="flex items-center gap-2" onClick={closeAll}>
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"><span className="text-white font-bold text-sm">WS</span></div>
-            <span className="font-bold text-sm text-primary">WALLSCAPE</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xs sm:text-sm">WS</span>
+            </div>
+            <span className="font-bold text-xs sm:text-sm text-primary">WALLSCAPE</span>
           </Link>
-          <button onClick={() => setMobileMenuOpen(false)} className="p-2 rounded-lg hover:bg-gray-100 transition"><X size={20} /></button>
+          <button onClick={() => setMobileMenuOpen(false)} className="p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 transition" aria-label="Close menu"><X size={20} /></button>
         </div>
-        <nav className="p-4 space-y-0.5 overflow-y-auto h-[calc(100vh-4rem)]">
-          <p className="text-xs font-semibold text-muted uppercase tracking-wider px-3 mb-2 mt-1">Menu</p>
+        <nav className="px-3 sm:px-4 py-3 space-y-0.5 overflow-y-auto h-[calc(100vh-3.5rem)]">
+          <p className="text-[11px] font-semibold text-muted uppercase tracking-wider px-3 mb-2">Menu</p>
           <MobileNavLink href="/" onClick={closeAll} isActive={pathname === '/'}>Home</MobileNavLink>
           <MobileNavLink href="/products" onClick={closeAll} isActive={pathname.startsWith('/products')}>All Products</MobileNavLink>
           <MobileNavLink href="/track" onClick={closeAll} isActive={pathname === '/track'}>Track Order</MobileNavLink>
 
-          <div className="pt-4 pb-1 mt-3 border-t border-border">
-            <p className="text-xs font-semibold text-muted uppercase tracking-wider px-3 mb-2 flex items-center gap-1.5">
+          <div className="pt-3 pb-1 mt-3 border-t border-border">
+            <p className="text-[11px] font-semibold text-muted uppercase tracking-wider px-3 mb-2 flex items-center gap-1.5">
               <LayoutGrid size={12} /> Categories
             </p>
-            {navCategories.map((cat) => (
-              <MobileNavLink key={cat.slug} href={`/categories/${cat.slug}`} onClick={closeAll} isActive={pathname === `/categories/${cat.slug}`}>{cat.name}</MobileNavLink>
-            ))}
+            <div className="max-h-[40vh] overflow-y-auto -mr-1 pr-1">
+              {navCategories.map((cat) => (
+                <MobileNavLink key={cat.slug} href={`/categories/${cat.slug}`} onClick={closeAll} isActive={pathname === `/categories/${cat.slug}`}>{cat.name}</MobileNavLink>
+              ))}
+            </div>
           </div>
 
-          <div className="pt-4 pb-1 mt-3 border-t border-border">
-            <p className="text-xs font-semibold text-muted uppercase tracking-wider px-3 mb-2">More</p>
+          <div className="pt-3 pb-1 mt-3 border-t border-border">
+            <p className="text-[11px] font-semibold text-muted uppercase tracking-wider px-3 mb-2">More</p>
             <MobileNavLink href="/projects" onClick={closeAll} isActive={pathname === '/projects'}>Projects</MobileNavLink>
             <MobileNavLink href="/blogs" onClick={closeAll} isActive={pathname.startsWith('/blogs')}>Blog</MobileNavLink>
             <MobileNavLink href="/about" onClick={closeAll} isActive={pathname === '/about'}>About Us</MobileNavLink>
@@ -254,7 +258,7 @@ export default function Header() {
             <MobileNavLink href="/faq" onClick={closeAll} isActive={pathname === '/faq'}>FAQ</MobileNavLink>
           </div>
 
-          <div className="pt-4 mt-3 border-t border-border">
+          <div className="pt-3 mt-3 border-t border-border">
             <a href="tel:+8801700000000" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm bg-primary/5 text-primary font-medium hover:bg-primary/10 transition"><Phone size={16} /> +880 1700-000000</a>
           </div>
         </nav>
