@@ -1,21 +1,13 @@
-'use client';
+import type { Metadata } from 'next';
+import { Calculator } from 'lucide-react';
+import RollCalcClient from './roll-calc-client';
 
-import { useState } from 'react';
-import { Calculator, RotateCcw } from 'lucide-react';
+export const metadata: Metadata = {
+  title: 'Wallpaper Roll Calculator - WALLSCAPE BANGLADESH',
+  description: 'Calculate how many rolls of wallpaper you need for your project.',
+};
 
 export default function RollCalculator() {
-  const [wallArea, setWallArea] = useState(0);
-  const [rollCoverage, setRollCoverage] = useState(28.5);
-  const [result, setResult] = useState<number | null>(null);
-
-  const calculate = () => {
-    if (wallArea <= 0) return;
-    const rolls = Math.ceil(wallArea / rollCoverage);
-    setResult(rolls);
-  };
-
-  const reset = () => { setWallArea(0); setRollCoverage(28.5); setResult(null); };
-
   return (
     <div className="container-custom py-8 lg:py-12">
       <div className="max-w-2xl mx-auto">
@@ -28,44 +20,7 @@ export default function RollCalculator() {
             <p className="text-muted text-sm">Estimate how many rolls you need</p>
           </div>
         </div>
-
-        <div className="card-modern p-6 space-y-5">
-          <div>
-            <label className="block text-sm font-medium mb-1">Total Wall Area (sq ft)</label>
-            <input
-              type="number"
-              value={wallArea || ''}
-              onChange={(e) => setWallArea(parseFloat(e.target.value) || 0)}
-              className="input-modern"
-              placeholder="e.g. 280"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Roll Coverage (sq ft) <span className="text-muted font-normal">Standard: 28.5 sq ft</span>
-            </label>
-            <input
-              type="number"
-              value={rollCoverage || ''}
-              onChange={(e) => setRollCoverage(parseFloat(e.target.value) || 0)}
-              className="input-modern"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-2">
-            <button onClick={calculate} className="btn-primary flex-1">Calculate</button>
-            <button onClick={reset} className="btn-ghost"><RotateCcw size={16} /> Reset</button>
-          </div>
-        </div>
-
-        {result !== null && (
-          <div className="card-modern p-6 mt-6">
-            <h3 className="font-semibold mb-2">You Need</h3>
-            <p className="text-3xl font-bold text-gradient">{result} roll{result > 1 ? 's' : ''}</p>
-            <p className="text-sm text-muted mt-1">Based on {wallArea} sq ft wall area and {rollCoverage} sq ft per roll</p>
-            <p className="text-xs text-muted mt-2">* We recommend buying 1 extra roll for pattern matching and waste</p>
-          </div>
-        )}
+        <RollCalcClient />
       </div>
     </div>
   );
