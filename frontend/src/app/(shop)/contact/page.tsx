@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, Loader2, CheckCircle } from 'lucide-react';
@@ -13,34 +14,29 @@ interface ContactForm {
   message: string;
 }
 
-interface ContactInfoItem {
-  icon: typeof Phone;
-  label: string;
-  value: string;
-  href?: string;
-}
-
-interface BusinessHoursItem {
-  day: string;
-  hours: string;
-}
-
-const contactInfo: ContactInfoItem[] = [
-  { icon: Phone, label: 'Phone', value: '+880 1700-000000', href: 'tel:+8801700000000' },
-  { icon: Mail, label: 'Email', value: 'hello@wallscape.com.bd', href: 'mailto:hello@wallscape.com.bd' },
-  { icon: MessageCircle, label: 'WhatsApp', value: '+880 1700-000000', href: 'https://wa.me/8801700000000' },
-  { icon: MapPin, label: 'Address', value: 'House 12, Road 5, Gulshan 1, Dhaka 1212, Bangladesh' },
-];
-
-const businessHours: BusinessHoursItem[] = [
-  { day: 'Saturday – Thursday', hours: '9:00 AM – 8:00 PM' },
-  { day: 'Friday', hours: '2:00 PM – 8:00 PM' },
-  { day: 'Public Holidays', hours: '10:00 AM – 6:00 PM' },
-];
-
 export default function ContactPage() {
   const [form, setForm] = useState<ContactForm>({ name: '', email: '', phone: '', subject: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const { data: settingsData } = useQuery({
+    queryKey: ['public-settings'],
+    queryFn: () => api.get<{ settings: Record<string, any> }>('/api/settings'),
+  });
+
+  const s = settingsData?.settings || {};
+
+  const contactInfo = [
+    { icon: Phone, label: 'Phone', value: s.contactPhone || '+880 1700-000000', href: `tel:${s.contactPhone || '+8801700000000'}` },
+    { icon: Mail, label: 'Email', value: s.contactEmail || 'hello@wallscape.com.bd', href: `mailto:${s.contactEmail || 'hello@wallscape.com.bd'}` },
+    { icon: MessageCircle, label: 'WhatsApp', value: s.whatsapp || '+880 1700-000000', href: `https://wa.me/${(s.whatsapp || '8801700000000').replace(/[^0-9]/g, '')}` },
+    { icon: MapPin, label: 'Address', value: s.contactAddress || 'House 12, Road 5, Gulshan 1, Dhaka 1212, Bangladesh' },
+  ];
+
+  const businessHours: { day: string; hours: string }[] = s.businessHours || [
+    { day: 'Saturday – Thursday', hours: '9:00 AM – 8:00 PM' },
+    { day: 'Friday', hours: '2:00 PM – 8:00 PM' },
+    { day: 'Public Holidays', hours: '10:00 AM – 6:00 PM' },
+  ];
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -85,60 +81,26 @@ export default function ContactPage() {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-medium mb-1.5">Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="input-modern w-full"
-                      placeholder="Your full name"
-                    />
+                    <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="input-modern w-full" placeholder="Your full name" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1.5">Email *</label>
-                    <input
-                      type="email"
-                      required
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="input-modern w-full"
-                      placeholder="your@email.com"
-                    />
+                    <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="input-modern w-full" placeholder="your@email.com" />
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-medium mb-1.5">Phone</label>
-                    <input
-                      type="tel"
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      className="input-modern w-full"
-                      placeholder="+880 1XXX-XXXXXX"
-                    />
+                    <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="input-modern w-full" placeholder="+880 1XXX-XXXXXX" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1.5">Subject *</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.subject}
-                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="input-modern w-full"
-                      placeholder="How can we help?"
-                    />
+                    <input type="text" required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} className="input-modern w-full" placeholder="How can we help?" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1.5">Message *</label>
-                  <textarea
-                    required
-                    rows={5}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="input-modern w-full resize-y"
-                    placeholder="Tell us about your project or inquiry..."
-                  />
+                  <textarea required rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="input-modern w-full resize-y" placeholder="Tell us about your project or inquiry..." />
                 </div>
                 {status === 'error' && (
                   <p className="text-sm text-red-500">Something went wrong. Please try again or email us directly.</p>
@@ -160,11 +122,7 @@ export default function ContactPage() {
             </div>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.835551105032!2d90.4125!3d23.7800!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDQ2JzQ4LjAiTiA5MMKwMjQnNDUuMCJF!5e0!3m2!1sen!2sbd!4v1"
-              width="100%"
-              height="300"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
+              width="100%" height="300" style={{ border: 0 }} allowFullScreen loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="WALLSCAPE BANGLADESH Location"
             />
@@ -214,9 +172,8 @@ export default function ContactPage() {
             <h3 className="font-bold mb-3 flex items-center gap-2"><MessageCircle size={16} className="text-primary" /> Facebook Messenger</h3>
             <p className="text-sm text-muted mb-4">Chat with us on Messenger for quick replies.</p>
             <a
-              href="https://m.me/wallscapebangladesh"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={s.messenger || 'https://m.me/wallscapebangladesh'}
+              target="_blank" rel="noopener noreferrer"
               className="btn-primary"
             >
               <MessageCircle size={16} />
