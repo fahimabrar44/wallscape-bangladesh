@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
   LayoutDashboard, Package, Grid3X3, ShoppingCart, Users, Star, FileText,
   FolderOpen, Image, Settings, Shield, BarChart3, LogOut,
-  Menu, X, Home, PanelTop, BookOpen, Phone
+  Menu, X, Home, BookOpen, Phone
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -18,7 +18,6 @@ const navItems = [
   { icon: Users, label: 'Customers', href: '/admin/customers' },
   { icon: Star, label: 'Reviews', href: '/admin/reviews' },
   { icon: Phone, label: 'Contact Info', href: '/admin/contact-info' },
-  { icon: PanelTop, label: 'Banners', href: '/admin/banners' },
   { icon: BookOpen, label: 'Blogs', href: '/admin/blogs' },
   { icon: FileText, label: 'Pages', href: '/admin/pages' },
   { icon: FolderOpen, label: 'Projects', href: '/admin/projects' },
