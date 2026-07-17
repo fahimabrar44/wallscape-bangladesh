@@ -207,39 +207,7 @@ export default function HomePage() {
         </motion.section>
       )}
 
-      {/* ═══ 4. SHOP BY ROOM ═══ */}
-      <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="py-10 sm:py-14 lg:py-20 bg-white">
-        <div className="container-custom">
-          <motion.div variants={fadeIn} className="text-center mb-10 lg:mb-14">
-            <span className="section-label mb-3 block justify-center">Shop by Room</span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mt-1.5 mb-2">Find Your Perfect Style</h2>
-            <p className="text-muted max-w-xl mx-auto">See how our wallpapers transform real spaces — from cozy bedrooms to grand living rooms</p>
-          </motion.div>
-
-          <motion.div variants={containerVariants} className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-            {[
-              { name: 'Living Room', slug: 'living-room', color: 'from-emerald-900/70 to-emerald-800/40' },
-              { name: 'Bedroom', slug: 'bedroom', color: 'from-indigo-900/70 to-indigo-800/40' },
-              { name: 'Office', slug: 'office', color: 'from-slate-900/70 to-slate-800/40' },
-              { name: 'Restaurant', slug: 'restaurant', color: 'from-amber-900/70 to-amber-800/40' },
-              { name: 'Hotel', slug: 'hotel', color: 'from-rose-900/70 to-rose-800/40' },
-              { name: 'Kids Room', slug: 'kids-room', color: 'from-sky-900/70 to-sky-800/40' },
-            ].map((room, i) => (
-              <motion.div key={i} variants={itemVariants}>
-                <Link href={`/categories/${room.slug}`} className={`group relative block aspect-[5/4] rounded-2xl overflow-hidden bg-gradient-to-br ${room.color} flex items-center justify-center`}>
-                  <div className="text-center p-6">
-                    <h3 className="text-white font-bold text-xl sm:text-2xl font-heading">{room.name}</h3>
-                    <p className="text-white/60 text-xs sm:text-sm mt-1.5">Explore wallpapers &rarr;</p>
-                  </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ═══ 5. WALLPAPER CALCULATOR ═══ */}
+      {/* ═══ 4. WALLPAPER CALCULATOR ═══ */}
       <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="py-12 sm:py-16 lg:py-24">
         <div className="container-custom">
           <div className="relative rounded-3xl overflow-hidden bg-primary-dark">
