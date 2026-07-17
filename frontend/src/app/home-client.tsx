@@ -49,10 +49,10 @@ export default function HomeClient({ initialProducts }: { initialProducts: { bes
   return (
     <>
       {/* Hero */}
-      <section className="relative min-h-[85vh] flex items-center bg-primary-dark overflow-hidden">
+      <section className="relative min-h-auto flex items-center bg-primary-dark overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
         <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary-light/5 rounded-full blur-[150px]" />
-        <div className="container-custom relative z-10 py-20">
+        <div className="container-custom relative z-10 py-10">
           <motion.div initial="hidden" animate="visible" variants={containerVariants} className="max-w-2xl">
             <motion.span variants={itemVariants} className="inline-flex items-center gap-2 bg-white/10 text-primary-light px-4 py-1.5 rounded-full text-sm font-medium mb-6">
               <Sparkles size={16} /> Premium Wallpaper &amp; Interior Solutions
