@@ -7,8 +7,10 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { formatCurrency, getImageUrl } from '@/lib/utils';
+import { useCart } from '@/providers/cart-provider';
 import type { Product, Category, Pagination } from '@/types';
 import { SlidersHorizontal, Search, Star, X, Heart, TrendingUp, ShoppingCart } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const sortOptions = [
   { value: 'newest', label: 'Newest' },
@@ -255,7 +257,15 @@ function ProductCard({ product }: { product: Product }) {
   const imgSrc = product.images?.[0] ? getImageUrl(product.images[0]) : '/images/placeholder.svg';
   const price = product.discountPrice || product.price;
   const hasDiscount = !!product.discountPrice;
-  const [wished, setWished] = useState(false);
+  const { addItem } = useCart();
+
+  function handleAddToCart(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (product.stock <= 0) return;
+    addItem(product);
+    toast.success(`"${product.name}" added to cart`);
+  }
 
   return (
     <div className="group relative">
@@ -270,7 +280,7 @@ function ProductCard({ product }: { product: Product }) {
             </div>
           )}
           <div className="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-            <span className="block w-full text-center text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-900 py-2 rounded-lg shadow-lg cursor-pointer hover:bg-white transition">
+            <span onClick={handleAddToCart} className="block w-full text-center text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-900 py-2 rounded-lg shadow-lg cursor-pointer hover:bg-white transition">
               <ShoppingCart size={14} className="inline mr-1" />Quick Add
             </span>
           </div>
@@ -299,9 +309,6 @@ function ProductCard({ product }: { product: Product }) {
           )}
         </div>
       </Link>
-      <button onClick={() => setWished(!wished)} className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition z-10 shadow-sm">
-        <Heart size={13} className={wished ? 'text-red-500 fill-red-500' : 'text-gray-400'} />
-      </button>
     </div>
   );
 }

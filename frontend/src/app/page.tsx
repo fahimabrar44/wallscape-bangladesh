@@ -9,7 +9,9 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { api } from '@/lib/api';
 import { formatCurrency, getImageUrl } from '@/lib/utils';
+import { useCart } from '@/providers/cart-provider';
 import type { Product, Category, Review, Project, Blog } from '@/types';
+import toast from 'react-hot-toast';
 import {
   ChevronRight, Star, ShoppingCart, ArrowRight, Ruler, Shield,
   Truck, HeadphonesIcon, Layers, Sparkles, Quote, Clock, MapPin,
@@ -496,7 +498,15 @@ function ProductCard({ product, isBestSeller }: { product: Product; isBestSeller
   const price = product.discountPrice || product.price;
   const hasDiscount = !!product.discountPrice;
   const outOfStock = product.stock <= 0;
-  const [wished, setWished] = useState(false);
+  const { addItem } = useCart();
+
+  function handleAddToCart(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (outOfStock) return;
+    addItem(product);
+    toast.success(`"${product.name}" added to cart`);
+  }
 
   return (
     <div className="group relative">
@@ -516,9 +526,8 @@ function ProductCard({ product, isBestSeller }: { product: Product; isBestSeller
             </div>
           )}
 
-          {/* Hover actions */}
           <div className="absolute inset-x-3 bottom-3 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-            <span className="flex-1 text-center text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-900 py-2 rounded-lg shadow-lg cursor-pointer hover:bg-white transition">
+            <span onClick={handleAddToCart} className="flex-1 text-center text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-900 py-2 rounded-lg shadow-lg cursor-pointer hover:bg-white transition">
               <ShoppingCart size={14} className="inline mr-1" />Add to Cart
             </span>
           </div>
@@ -548,10 +557,6 @@ function ProductCard({ product, isBestSeller }: { product: Product; isBestSeller
           )}
         </div>
       </Link>
-
-      <button onClick={() => setWished(!wished)} className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition z-10 shadow-sm">
-        <Heart size={13} className={wished ? 'text-red-500 fill-red-500' : 'text-gray-400'} />
-      </button>
     </div>
   );
 }
