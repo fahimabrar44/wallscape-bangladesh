@@ -3,6 +3,7 @@
 import { useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { formatCurrency, getImageUrl } from '@/lib/utils';
@@ -18,6 +19,7 @@ const tabs = ['Description', 'Specifications', 'Installation', 'Reviews', 'Shipp
 
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
+  const router = useRouter();
   const { addItem } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -221,7 +223,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               <ShoppingCart size={18} /> Add to Cart
             </button>
 
-            <button onClick={() => addItem(product, quantity)} disabled={product.stock <= 0}
+            <button onClick={() => { addItem(product, quantity); router.push('/checkout'); }} disabled={product.stock <= 0}
               className="btn-secondary h-12 justify-center gap-2 px-5">
               <Zap size={18} /> Buy Now
             </button>
